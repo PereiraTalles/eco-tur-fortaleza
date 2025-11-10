@@ -1,0 +1,1 @@
+Arquitetura implementada — rascunho

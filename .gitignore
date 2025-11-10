@@ -1,0 +1,21 @@
+# Node/React
+node_modules/
+dist/
+build/
+.env
+
+# Java/Spring
+target/
+*.iml
+*.class
+*.log
+*.jar
+*.war
+/.idea/
+/.project
+/.settings/
+/.classpath
+
+# Sistema
+.DS_Store
+Thumbs.db
