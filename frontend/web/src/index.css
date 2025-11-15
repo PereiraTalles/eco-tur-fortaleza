@@ -1,0 +1,221 @@
+:root {
+  font-family: Arial, system-ui, sans-serif;
+  color: #333;
+}
+
+/* títulos e botões com Arial Rounded */
+.login-title,
+.btn {
+  font-family: "Arial Rounded MT Bold", Arial, system-ui, sans-serif;
+}
+/* fundo geral */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #333; /* fundo escuro externo */
+}
+
+/* moldura cinza */
+.app-frame {
+  width: 100%;
+  max-width: 1400px;
+  min-height: 87vh;
+
+  background-color: #d9d9d9;
+  border-radius: 32px;
+  padding: 48px;
+  box-sizing: border-box;
+  margin: 30px auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* card interno */
+.login-card {
+  width: 100%;
+  max-width: 900px;
+
+  background-color: #d9d9d9;
+  border-radius: 24px;
+
+  padding: 64px 96px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 41px;
+}
+
+/* título ECO TUR FORTALEZA */
+.login-title {
+  margin: 0;
+  text-align: center;
+
+  font-size: 2.6rem;           /* mais forte */
+  font-weight: 600;            /* mais grosso */
+  letter-spacing: 0.20em;      /* mais espaçado */
+  color: #4d4d4d;
+}
+
+/* formulário */
+.login-form {
+  width: 100%;
+  max-width: 420px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  font-size: 1.1rem; /* labels maiores */
+}
+
+.login-field label {
+  color: #444;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.login-field input {
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 1px solid #777;
+  font-size: 1.05rem;
+  background-color: #ffffff;
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.login-field input:focus {
+  border: 1px solid #555;
+  background-color: #fafafa;
+}
+
+/* ações */
+.login-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 28px;
+}
+
+.btn {
+  min-width: 150px;
+  padding: 12px 26px;
+  border-radius: 20px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.btn-primary {
+  background-color: #6a6a6a;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #5a5a5a;
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  color: #555;
+  border: 1px solid #ccc;
+}
+
+.btn-secondary:hover {
+  background-color: #f3f3f3;
+}
+
+/* rodapé */
+.app-footer {
+  margin-top: 22px;
+  font-size: 0.8rem;
+  color: #fff;
+  text-align: center;
+}
+/* ====== TELA CRIAR CONTA (GRADE 3x2) ====== */
+
+.signup-form {
+  width: 120%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+/* 3 colunas x 2 linhas */
+.signup-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 40px;
+  row-gap: 24px;
+}
+
+/* botões lado a lado, centralizados */
+.signup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+/* responsivo: empilha em 1 coluna no celular */
+@media (max-width: 900px) {
+  .signup-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signup-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+    margin-inline: auto;
+  }
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .app-frame {
+    padding: 24px;
+    min-height: 100vh;
+  }
+
+  .login-card {
+    padding: 40px 24px;
+    max-width: 100%;
+    gap: 32px;
+  }
+
+  .login-title {
+    font-size: 2rem;
+    letter-spacing: 0.14em;
+  }
+
+  .login-field input {
+    font-size: 1rem;
+  }
+
+  .login-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
