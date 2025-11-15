@@ -1,0 +1,141 @@
+import express from "express";
+import cors from "cors";
+import { ping, query } from "./db.js";
+import { validateSpotPayload } from "./validators/spotValidation.js";
+import { notFound, errorHandler } from "./middlewares/errors.js";
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Health check simples
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", service: "eco-tur-backend" });
+});
+
+// Health do banco
+app.get("/db-health", async (req, res) => {
+  try {
+    const ok = await ping();
+    res.status(200).json({ db: ok ? "ok" : "fail" });
+  } catch (e) {
+    res.status(500).json({ db: "fail", error: e.message });
+  }
+});
+
+// LISTAR com filtros + paginação real (rota ÚNICA)
+app.get("/api/spots", async (req, res) => {
+  try {
+    const { category, district, q, limit = 20, offset = 0 } = req.query;
+    const params = [];
+    const where = [];
+
+    if (category) { params.push(category); where.push(`category = $${params.length}`); }
+    if (district) { params.push(district); where.push(`district = $${params.length}`); }
+    if (q) {
+      params.push(`%${q}%`);
+      where.push(`(name ILIKE $${params.length} OR description ILIKE $${params.length})`);
+    }
+
+    // 1) total (sem limit/offset)
+    const countSql = `
+      SELECT COUNT(*)::int AS total
+      FROM spots
+      ${where.length ? "WHERE " + where.join(" AND ") : ""}
+    `;
+    const countRes = await query(countSql, params);
+    const total = countRes.rows[0].total;
+
+    // 2) dados paginados
+    const dataSql = `
+      SELECT id, name, category, district, rating, created_at
+      FROM spots
+      ${where.length ? "WHERE " + where.join(" AND ") : ""}
+      ORDER BY created_at DESC
+      LIMIT $${params.length + 1} OFFSET $${params.length + 2}
+    `;
+    const dataRes = await query(dataSql, [...params, Number(limit), Number(offset)]);
+
+    // 3) meta de paginação
+    const page = Math.floor(Number(offset) / Number(limit)) + 1;
+    const totalPages = Math.max(1, Math.ceil(total / Number(limit)));
+
+    res.set("X-Total-Count", String(total));
+    res.json({
+      data: dataRes.rows,
+      meta: { total, page, totalPages, limit: Number(limit), offset: Number(offset) }
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// DETALHE por id
+app.get("/api/spots/:id", async (req, res) => {
+  try {
+    const r = await query(
+      "SELECT id, name, category, district, description, rating, created_at FROM spots WHERE id = $1",
+      [Number(req.params.id)]
+    );
+    if (r.rowCount === 0) return res.status(404).json({ error: "not_found" });
+    res.json(r.rows[0]);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// CRIAR
+app.post("/api/spots", async (req, res, next) => {
+  try {
+    const errors = validateSpotPayload(req.body);
+    if (errors.length) return res.status(400).json({ error: "validation_error", details: errors });
+
+    const { name, category, district = null, description = null, rating = 0 } = req.body;
+    const r = await query(
+      `INSERT INTO spots (name, category, district, description, rating)
+       VALUES ($1,$2,$3,$4,$5)
+       RETURNING id, name, category, district, description, rating, created_at`,
+      [name, category, district, description, rating]
+    );
+    res.status(201).json(r.rows[0]);
+  } catch (e) { next(e); }
+});
+
+// UPDATE (PUT)
+app.put("/api/spots/:id", async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) return res.status(400).json({ error: "invalid_id" });
+
+    const errors = validateSpotPayload(req.body);
+    if (errors.length) return res.status(400).json({ error: "validation_error", details: errors });
+
+    const { name, category, district = null, description = null, rating = 0 } = req.body;
+    const r = await query(
+      `UPDATE spots
+         SET name=$1, category=$2, district=$3, description=$4, rating=$5
+       WHERE id=$6
+       RETURNING id, name, category, district, description, rating, created_at`,
+      [name, category, district, description, rating, id]
+    );
+    if (r.rowCount === 0) return res.status(404).json({ error: "not_found" });
+    res.json(r.rows[0]);
+  } catch (e) { next(e); }
+});
+
+// DELETE (mantém igual, só muda catch)
+app.delete("/api/spots/:id", async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) return res.status(400).json({ error: "invalid_id" });
+    const r = await query("DELETE FROM spots WHERE id=$1", [id]);
+    if (r.rowCount === 0) return res.status(404).json({ error: "not_found" });
+    res.status(204).send();
+  } catch (e) { next(e); }
+});
+
+// 404 e handler final
+app.use(notFound);
+app.use(errorHandler);
+
+export default app;
