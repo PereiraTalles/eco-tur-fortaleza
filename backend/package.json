@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "src/server.js",
   "type": "module",
-  "scripts": {
+"scripts": {
   "dev": "nodemon src/server.js",
   "start": "node src/server.js",
-  "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand"
+  "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
+  "seed": "node src/seed.js"
 },
   "dependencies": {
     "cors": "^2.8.5",
