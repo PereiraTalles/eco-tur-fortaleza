@@ -6,30 +6,22 @@ import { notFound, errorHandler } from "./middlewares/errors.js";
 
 const app = express();
 
-/*
- * CORS bem explícito, incluindo pré-flight (OPTIONS)
- */
 const allowedOrigins = [
-  "http://localhost:5173",              // Vite dev
-  "https://eco-tur-fortaleza.onrender.com" // se um dia o front web estiver no mesmo domínio
+  "http://localhost:5173",                   // Vite dev
+  "https://eco-tur-fortaleza.onrender.com",  // backend no Render
+  "https://eco-tur-fortaleza.vercel.app"     // frontend na Vercel
 ];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // permite chamadas de ferramentas sem origin (Postman, PowerShell etc.)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      // se quiser liberar geral, pode simplificar para: callback(null, true)
-      return callback(new Error("Not allowed by CORS"));
-    },
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// garante resposta ao OPTIONS em qualquer rota
+// para pré-flight (OPTIONS)
 app.options("*", cors());
+
 
 app.use(express.json());
 
