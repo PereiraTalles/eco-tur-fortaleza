@@ -75,3 +75,24 @@ export async function loginUsuario(dados: {
   });
   return resp;
 }
+type CriarContaPayload = {
+  nome: string;
+  sobrenome: string;
+  cidade: string;
+  email: string;
+  senha: string;
+};
+
+export async function criarUsuario(dados: CriarContaPayload) {
+  return request<{
+    id: number;
+    name: string;
+    sobrenome: string;
+    cidade: string;
+    email: string;
+    created_at: string;
+  }>("/api/users/register", {
+    method: "POST",
+    body: dados,
+  });
+}

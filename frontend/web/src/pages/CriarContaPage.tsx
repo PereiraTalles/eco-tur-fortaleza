@@ -1,19 +1,20 @@
 import React, { useState } from "react";
+import { criarUsuario } from "../services/api";
 
 type CriarContaPageProps = {
   onVoltarLogin: () => void;
 };
 
 const CriarContaPage: React.FC<CriarContaPageProps> = ({ onVoltarLogin }) => {
-  // estados dos campos
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
   const [cidade, setCidade] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmaSenha, setConfirmaSenha] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     if (!nome || !sobrenome || !email || !cidade || !senha || !confirmaSenha) {
       alert("Preencha todos os campos.");
       return;
@@ -24,7 +25,25 @@ const CriarContaPage: React.FC<CriarContaPageProps> = ({ onVoltarLogin }) => {
       return;
     }
 
-    alert("Conta criada com sucesso! (lógica de backend vem depois)");
+    try {
+      setCarregando(true);
+
+      await criarUsuario({
+        nome,
+        sobrenome,
+        cidade,
+        email,
+        senha,
+      });
+
+      alert("Conta criada com sucesso!");
+      onVoltarLogin(); // volta pra tela de login
+    } catch (error: any) {
+      console.error(error);
+      alert("Erro ao criar conta. Tente novamente.");
+    } finally {
+      setCarregando(false);
+    }
   };
 
   return (
@@ -39,7 +58,6 @@ const CriarContaPage: React.FC<CriarContaPageProps> = ({ onVoltarLogin }) => {
 
           <form className="signup-form" onSubmit={(e) => e.preventDefault()}>
             <div className="signup-grid">
-
               {/* linha 1 */}
               <div className="login-field">
                 <label htmlFor="nome">Nome:</label>
@@ -107,17 +125,16 @@ const CriarContaPage: React.FC<CriarContaPageProps> = ({ onVoltarLogin }) => {
                   onChange={(e) => setConfirmaSenha(e.target.value)}
                 />
               </div>
-
             </div>
 
-            {/* botões lado a lado */}
             <div className="signup-actions">
               <button
                 type="button"
                 className="btn btn-primary"
                 onClick={handleCreate}
+                disabled={carregando}
               >
-                Entrar/Criar Conta
+                {carregando ? "Criando..." : "Entrar/Criar Conta"}
               </button>
 
               <button
@@ -128,14 +145,12 @@ const CriarContaPage: React.FC<CriarContaPageProps> = ({ onVoltarLogin }) => {
                 Voltar para Login
               </button>
             </div>
-
           </form>
         </div>
       </div>
 
-      {/* footer (NÃO MEXI) */}
       <footer className="app-footer">
-        © Copyright Eco Fortaleza <br/> Todos os Direitos Reservados
+        © Copyright Eco Fortaleza <br /> Todos os Direitos Reservados
       </footer>
     </div>
   );
