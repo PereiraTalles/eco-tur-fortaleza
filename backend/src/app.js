@@ -149,18 +149,16 @@ app.delete("/api/spots/:id", async (req, res, next) => {
 });
 // ================== AUTENTICAÇÃO SIMPLES ==================
 
-// Cadastro de usuário
 app.post("/api/users/register", async (req, res, next) => {
   try {
-    const { nome, sobrenome, email, senha } = req.body;
+    const { nome, sobrenome, cidade, email, senha } = req.body;
 
-    if (!nome || !sobrenome || !email || !senha) {
+    if (!nome || !sobrenome || !cidade || !email || !senha) {
       return res
         .status(400)
         .json({ error: "validation_error", details: ["Todos os campos são obrigatórios."] });
     }
 
-    // verifica se já existe usuário com esse email
     const exists = await query("SELECT id FROM users WHERE email = $1", [email]);
     if (exists.rowCount > 0) {
       return res.status(409).json({ error: "email_already_exists" });
@@ -169,10 +167,10 @@ app.post("/api/users/register", async (req, res, next) => {
     const fullName = `${nome} ${sobrenome}`;
 
     const insert = await query(
-      `INSERT INTO users (name, email, password)
-       VALUES ($1, $2, $3)
-       RETURNING id, name, email, created_at`,
-      [fullName, email, senha] // <- senha em texto simples (opção A)
+      `INSERT INTO users (name, sobrenome, cidade, email, password)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, name, sobrenome, cidade, email, created_at`,
+      [fullName, sobrenome, cidade, email, senha]
     );
 
     return res.status(201).json(insert.rows[0]);
@@ -180,6 +178,7 @@ app.post("/api/users/register", async (req, res, next) => {
     next(e);
   }
 });
+
 
 // Login simples (email + senha)
 app.post("/api/auth/login", async (req, res, next) => {
@@ -193,7 +192,7 @@ app.post("/api/auth/login", async (req, res, next) => {
     }
 
     const result = await query(
-      "SELECT id, name, email FROM users WHERE email = $1 AND password = $2",
+      "SELECT id, name, sobrenome, cidade, email FROM users WHERE email = $1 AND password = $2",
       [email, senha]
     );
 

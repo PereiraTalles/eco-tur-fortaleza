@@ -2,7 +2,8 @@ import "./HomePage.css";
 
 function HomePage() {
   return (
-    <div className="home-frame">
+    <div>
+        <div className="home-frame">
       <div className="home-main">
         {/* LADO ESQUERDO – MAPA + BUSCA */}
         <section className="home-left">
@@ -74,8 +75,8 @@ function HomePage() {
           </section>
         </section>
       </div>
-
-      <footer className="home-footer">
+    </div>
+    <footer className="home-footer">
         © Copyright Eco Fortaleza Todos os Direitos Reservados
       </footer>
     </div>
