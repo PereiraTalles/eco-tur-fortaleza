@@ -1,22 +1,39 @@
 import React, { useState } from "react";
+import { loginUsuario } from "../services/api";
 
 type LoginPageProps = {
   onCriarConta: () => void;
-  onLoginSuccess: () => void; // ← adicionamos isso
+  onLoginSuccess: () => void;
 };
 
 const LoginPage: React.FC<LoginPageProps> = ({ onCriarConta, onLoginSuccess }) => {
-  // estados opcionais, caso você queira validação básica depois
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
 
-  const handleLogin = () => {
-    // por enquanto sempre considera login válido
-    // futuramente validaremos com o backend
-    if (email.trim() !== "" && senha.trim() !== "") {
+  const handleLogin = async () => {
+    if (!email || !senha) {
+      setErro("Preencha e-mail e senha.");
+      return;
+    }
+
+    try {
+      setCarregando(true);
+      setErro(null);
+
+      // chama o backend (Render)
+      await loginUsuario({ email, senha });
+
+      // se der certo, vai para Home
       onLoginSuccess();
-    } else {
-      alert("Preencha e-mail e senha.");
+    } catch (e: any) {
+      console.error(e);
+      setErro(
+        e?.message || "Não foi possível fazer login. Tente novamente."
+      );
+    } finally {
+      setCarregando(false);
     }
   };
 
@@ -30,7 +47,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ onCriarConta, onLoginSuccess }) =
             FORTALEZA
           </h1>
 
-          <form className="login-form" onSubmit={(e) => e.preventDefault()}>
+          <form
+            className="login-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+          >
             <div className="login-field">
               <label htmlFor="email">E-mail:</label>
               <input
@@ -52,29 +75,40 @@ const LoginPage: React.FC<LoginPageProps> = ({ onCriarConta, onLoginSuccess }) =
                 onChange={(e) => setSenha(e.target.value)}
               />
             </div>
+
+            {erro && (
+              <p
+                style={{
+                  color: "#b00020",
+                  marginTop: "8px",
+                  fontSize: "0.9rem",
+                }}
+              >
+                {erro}
+              </p>
+            )}
+
+            <div className="login-actions" style={{ marginTop: "24px" }}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={carregando}
+              >
+                {carregando ? "Entrando..." : "Entrar"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onCriarConta}
+                disabled={carregando}
+              >
+                Criar Conta
+              </button>
+            </div>
           </form>
-
-          <div className="login-actions">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleLogin}      // ← LOGIN FUNCIONA AGORA
-            >
-              Entrar
-            </button>
-
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={onCriarConta}
-            >
-              Criar Conta
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Mantido exatamente como você pediu */}
       <footer className="app-footer">
         © Copyright Eco Fortaleza <br /> Todos os Direitos Reservados
       </footer>

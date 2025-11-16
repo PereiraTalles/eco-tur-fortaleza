@@ -5,8 +5,34 @@ import { validateSpotPayload } from "./validators/spotValidation.js";
 import { notFound, errorHandler } from "./middlewares/errors.js";
 
 const app = express();
-app.use(cors());
+
+/*
+ * CORS bem explícito, incluindo pré-flight (OPTIONS)
+ */
+const allowedOrigins = [
+  "http://localhost:5173",              // Vite dev
+  "https://eco-tur-fortaleza.onrender.com" // se um dia o front web estiver no mesmo domínio
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // permite chamadas de ferramentas sem origin (Postman, PowerShell etc.)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      // se quiser liberar geral, pode simplificar para: callback(null, true)
+      return callback(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
+
+// garante resposta ao OPTIONS em qualquer rota
+app.options("*", cors());
+
 app.use(express.json());
+
 
 // Health check simples
 app.get("/health", (req, res) => {
