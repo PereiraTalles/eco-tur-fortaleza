@@ -6,24 +6,20 @@ import { notFound, errorHandler } from "./middlewares/errors.js";
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",                   // Vite dev
-  "https://eco-tur-fortaleza.onrender.com",  // backend no Render
-  "https://eco-tur-fortaleza.vercel.app"     // frontend na Vercel
-];
+// CORS BEM SIMPLES: libera tudo
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// para pré-flight (OPTIONS)
+// pré-flight
 app.options("*", cors());
 
-
 app.use(express.json());
+
 
 
 // Health check simples
