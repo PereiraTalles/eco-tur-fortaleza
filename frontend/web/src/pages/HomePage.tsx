@@ -176,7 +176,7 @@ function HomePage() {
       </div>
 
       <footer className="home-footer">
-        © Copyright Eco Fortaleza Todos os Direitos Reservados
+        © Copyright Eco Fortaleza <br /> Todos os Direitos Reservados
       </footer>
     </div>
   );

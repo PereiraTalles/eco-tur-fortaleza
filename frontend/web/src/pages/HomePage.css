@@ -11,7 +11,7 @@ body {
   max-width: 1400px;
   min-height: 90vh;
 
-  margin: 30px auto;
+  margin: 20px auto;
   padding: 24px 32px;
   box-sizing: border-box;
 
@@ -118,18 +118,6 @@ body {
   margin-bottom: 12px;
 }
 
-.home-right-icons {
-  display: flex;
-  gap: 8px;
-}
-
-.home-icon-square {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  border: 2px solid #555;
-}
-
 /* seções (Praias, Cidade) */
 .home-section {
   margin-bottom: 24px;
@@ -139,10 +127,11 @@ body {
   padding: 10px 28px;
   border-radius: 18px;
   border: 1px solid #777;
-  background-color: #ffffff;
+  background-color: #fff;
   font-size: 1.05rem;
   font-weight: 600;
   cursor: default;
+  color: #606060;
 }
 
 /* linha de cards */
@@ -155,7 +144,7 @@ body {
   display: flex;
   gap: 18px;
 
-  max-width: 720px;      /* ~3 cards de 220px + espaçamento */
+  max-width: 621px;      /* ~3 cards de 220px + espaçamento */
   overflow: hidden;      /* não deixa o container estourar pra fora */
 }
 
@@ -273,7 +262,7 @@ body {
   margin-top: 16px;
   text-align: center;
   font-size: 0.8rem;
-  color: #555;
+  color: #fff;
 }
 
 /* RESPONSIVO: empilha colunas em telas menores */
