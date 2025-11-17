@@ -1,6 +1,8 @@
 /* fundo geral da página principal */
 body {
   background-color: #333;
+  margin: 0;
+  overflow-x: hidden; /* evita barra de rolagem horizontal geral */
 }
 
 /* painel grande centralizado (parecido com login, mas exclusivo da Home) */
@@ -152,7 +154,26 @@ body {
 
   display: flex;
   gap: 18px;
+
+  max-width: 720px;      /* ~3 cards de 220px + espaçamento */
+  overflow: hidden;      /* não deixa o container estourar pra fora */
 }
+
+/* transforma em carrossel horizontal */
+.home-cards-carousel {
+  overflow-x: auto;      /* rolagem só dentro da faixa */
+  scroll-snap-type: x mandatory;
+}
+
+.home-cards-carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.home-cards-carousel::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
 
 /* transforma em carrossel horizontal */
 .home-cards-carousel {
