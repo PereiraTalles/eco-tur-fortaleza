@@ -61,13 +61,23 @@ app.get("/api/spots", async (req, res) => {
     const total = countRes.rows[0].total;
 
     // 2) dados paginados
-    const dataSql = `
-      SELECT id, name, category, district, rating, created_at
-      FROM spots
-      ${where.length ? "WHERE " + where.join(" AND ") : ""}
-      ORDER BY created_at DESC
-      LIMIT $${params.length + 1} OFFSET $${params.length + 2}
-    `;
+const dataSql = `
+  SELECT
+    id,
+    name,
+    category,
+    district,
+    description,
+    rating,
+    latitude,
+    longitude,
+    image_url,
+    created_at
+  FROM spots
+  ${where.length ? "WHERE " + where.join(" AND ") : ""}
+  ORDER BY created_at DESC
+  LIMIT $${params.length + 1} OFFSET $${params.length + 2}
+`;
     const dataRes = await query(dataSql, [...params, Number(limit), Number(offset)]);
 
     // 3) meta de paginação
@@ -88,7 +98,19 @@ app.get("/api/spots", async (req, res) => {
 app.get("/api/spots/:id", async (req, res) => {
   try {
     const r = await query(
-      "SELECT id, name, category, district, description, rating, created_at FROM spots WHERE id = $1",
+      `SELECT
+         id,
+         name,
+         category,
+         district,
+         description,
+         rating,
+         latitude,
+         longitude,
+         image_url,
+         created_at
+       FROM spots
+       WHERE id = $1`,
       [Number(req.params.id)]
     );
     if (r.rowCount === 0) return res.status(404).json({ error: "not_found" });
@@ -97,6 +119,7 @@ app.get("/api/spots/:id", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
 
 // CRIAR
 app.post("/api/spots", async (req, res, next) => {
