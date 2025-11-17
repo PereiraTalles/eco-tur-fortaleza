@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import "./HomePage.css";
 import { listarSpots } from "../services/api";
 import type { Spot } from "../services/api";
+import { MapContainer, TileLayer } from "react-leaflet";
 
 function HomePage() {
   const [spots, setSpots] = useState<Spot[]>([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
   const [busca, setBusca] = useState("");
+
+  // centro padrão do mapa (Fortaleza)
+  const fortalezaCenter: [number, number] = [-3.7319, -38.5267];
 
   useEffect(() => {
     (async () => {
@@ -79,12 +83,26 @@ function HomePage() {
             </header>
 
             <div className="home-map">
-              {/* Aqui depois entra o mapa de verdade */}
-              <div className="home-map-placeholder">
-                {loading
-                  ? "Carregando pontos..."
-                  : "Mapa aqui (lugar reservado)"}
-              </div>
+              {loading ? (
+                <div className="home-map-placeholder">Carregando pontos...</div>
+              ) : (
+                <MapContainer
+                  {...({
+                    center: fortalezaCenter,
+                    zoom: 12,
+                    scrollWheelZoom: true,
+                    className: "home-map-leaflet",
+                  } as any)}
+                >
+                  <TileLayer
+                    {...({
+                      attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    } as any)}
+                  />
+                </MapContainer>
+              )}
             </div>
           </section>
 
@@ -159,7 +177,9 @@ function HomePage() {
                 ))}
 
                 {!loading && cidadesFiltradas.length === 0 && (
-                  <span className="home-empty">Nenhum ponto de cidade encontrado.</span>
+                  <span className="home-empty">
+                    Nenhum ponto de cidade encontrado.
+                  </span>
                 )}
               </div>
             </section>

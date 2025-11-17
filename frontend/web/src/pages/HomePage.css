@@ -77,25 +77,18 @@ body {
   background: transparent;
 }
 
-/* área do mapa */
 .home-map {
   flex: 1;
   margin-top: 8px;
   border-radius: 8px;
   overflow: hidden;
+  min-height: 380px; /* garante altura mínima */
 }
-
-.home-map-placeholder {
+.home-map-leaflet,
+.home-map .leaflet-container {
   width: 100%;
   height: 100%;
   min-height: 380px;
-  background-color: #f2f2f2;
-  border: 1px solid #c0c0c0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  font-size: 1rem;
 }
 
 /* divisor vertical */
