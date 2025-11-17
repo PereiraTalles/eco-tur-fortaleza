@@ -23,7 +23,6 @@ async function request<TResponse>(
   });
 
   if (!res.ok) {
-    // tenta ler o JSON de erro, se houver
     let errorDetail: unknown;
     try {
       errorDetail = await res.json();
@@ -36,7 +35,6 @@ async function request<TResponse>(
     );
   }
 
-  // se não tiver corpo, só retorna como any
   if (res.status === 204) {
     return {} as TResponse;
   }
@@ -44,7 +42,7 @@ async function request<TResponse>(
   return (await res.json()) as TResponse;
 }
 
-// --------- Funções específicas da nossa API ---------
+// --------- USUÁRIO / AUTENTICAÇÃO ---------
 
 export type User = {
   id: number;
@@ -55,6 +53,7 @@ export type User = {
 export async function registrarUsuario(dados: {
   nome: string;
   sobrenome: string;
+  cidade: string;
   email: string;
   senha: string;
 }): Promise<User> {
@@ -75,6 +74,8 @@ export async function loginUsuario(dados: {
   });
   return resp;
 }
+
+// (se você ainda usa essa função em outro lugar, pode manter)
 type CriarContaPayload = {
   nome: string;
   sobrenome: string;
@@ -87,12 +88,28 @@ export async function criarUsuario(dados: CriarContaPayload) {
   return request<{
     id: number;
     name: string;
-    sobrenome: string;
-    cidade: string;
     email: string;
     created_at: string;
   }>("/api/users/register", {
     method: "POST",
     body: dados,
   });
+}
+
+// --------- SPOTS / PONTOS TURÍSTICOS ---------
+
+export type Spot = {
+  id: number;
+  name: string;
+  category: string;
+  district: string | null;
+  description: string | null;
+  rating: number;
+  latitude: number | null;
+  longitude: number | null;
+  image_url: string | null;
+};
+
+export async function listarSpots() {
+  return request<{ data: Spot[]; meta: unknown }>("/api/spots");
 }
