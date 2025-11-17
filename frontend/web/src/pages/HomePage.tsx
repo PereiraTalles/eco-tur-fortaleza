@@ -2,13 +2,51 @@ import { useEffect, useState } from "react";
 import "./HomePage.css";
 import { listarSpots } from "../services/api";
 import type { Spot } from "../services/api";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import "leaflet-routing-machine";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import L from "leaflet";
+
+type RotaProps = {
+  origem: [number, number] | null;
+  destino: [number, number] | null;
+};
+
+function Rota({ origem, destino }: RotaProps) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!origem || !destino) return;
+
+    const routingControl = (L as any).Routing.control({
+      waypoints: [
+        L.latLng(origem[0], origem[1]),
+        L.latLng(destino[0], destino[1]),
+      ],
+      routeWhileDragging: false,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: true,
+      show: false,
+    }).addTo(map);
+
+    // limpar a rota antiga quando origem/destino mudarem
+    return () => {
+      map.removeControl(routingControl);
+    };
+  }, [origem, destino, map]);
+
+  return null;
+}
+
 
 function HomePage() {
-  const [spots, setSpots] = useState<Spot[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [erro, setErro] = useState<string | null>(null);
-  const [busca, setBusca] = useState("");
+    const [spots, setSpots] = useState<Spot[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [erro, setErro] = useState<string | null>(null);
+    const [busca, setBusca] = useState("");
+    const [origem, setOrigem] = useState<[number, number] | null>(null);
+    const [destino, setDestino] = useState<[number, number] | null>(null);
 
   // centro padrão do mapa (Fortaleza)
   const fortalezaCenter: [number, number] = [-3.7319, -38.5267];
@@ -60,6 +98,38 @@ function HomePage() {
     }
     window.open(url, "_blank");
   }
+    function handleCardClick(spot: Spot) {
+  if (spot.latitude != null && spot.longitude != null) {
+    // destino = ponto clicado
+    setDestino([spot.latitude, spot.longitude]);
+  } else {
+    alert("Esse ponto ainda não tem coordenadas cadastradas.");
+    // PLANO B - abre no Google Maps
+    abrirNoMaps(spot);
+    return;
+  }
+
+  // tentar pegar localização do usuário (GPS)
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // deu certo → seta origem e seguimos
+        setOrigem([position.coords.latitude, position.coords.longitude]);
+      },
+      (error) => {
+        console.error(error);
+        alert("Não foi possível obter sua localização. Abrindo no Maps…");
+
+        // PLANO B: abre no Google Maps
+        abrirNoMaps(spot);
+      }
+    );
+  } else {
+    alert("Seu navegador não suporta geolocalização. Abrindo no Maps…");
+    abrirNoMaps(spot);
+  }
+}
+
 
   return (
     <div>
@@ -87,21 +157,24 @@ function HomePage() {
                 <div className="home-map-placeholder">Carregando pontos...</div>
               ) : (
                 <MapContainer
-                  {...({
-                    center: fortalezaCenter,
-                    zoom: 12,
-                    scrollWheelZoom: true,
-                    className: "home-map-leaflet",
-                  } as any)}
-                >
-                  <TileLayer
                     {...({
-                      attribution:
-                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        center: fortalezaCenter,
+                        zoom: 12,
+                        scrollWheelZoom: true,
+                        className: "home-map-leaflet",
                     } as any)}
-                  />
+                    >
+                    <TileLayer
+                        {...({
+                        attribution:
+                            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        } as any)}
+                    />
+
+                    {origem && destino && <Rota origem={origem} destino={destino} />}
                 </MapContainer>
+
               )}
             </div>
           </section>
@@ -129,7 +202,7 @@ function HomePage() {
                   <article
                     key={spot.id}
                     className="home-card"
-                    onClick={() => abrirNoMaps(spot)}
+                    onClick={() => handleCardClick(spot)}
                   >
                     <div className="home-card-title">{spot.name}</div>
                     <div
@@ -160,7 +233,7 @@ function HomePage() {
                   <article
                     key={spot.id}
                     className="home-card"
-                    onClick={() => abrirNoMaps(spot)}
+                    onClick={() => handleCardClick(spot)}
                   >
                     <div className="home-card-title">{spot.name}</div>
                     <div
