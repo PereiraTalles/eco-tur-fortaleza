@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./HomePage.css";
-import { listarSpots, Spot } from "../services/api";
+import { listarSpots } from "../services/api";
+import type { Spot } from "../services/api";
 
 function HomePage() {
   const [spots, setSpots] = useState<Spot[]>([]);
