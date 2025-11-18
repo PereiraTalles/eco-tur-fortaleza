@@ -6,14 +6,23 @@ import HomePage from "./pages/HomePage";
 type TelaAtiva = "login" | "cadastro" | "home";
 
 function App() {
-  const [tela, setTela] = useState<TelaAtiva>("login");
+  const [tela, setTela] = useState<TelaAtiva>(() => {
+  const salvo = localStorage.getItem("eco_tur_tela");
+  if (salvo === "home") {
+    return "home";
+  }
+  return "login";
+});
 
   if (tela === "login") {
     return (
       <LoginPage
         onCriarConta={() => setTela("cadastro")}
         // vamos usar isso no próximo passo
-        onLoginSuccess={() => setTela("home")}
+        onLoginSuccess={() => {
+          setTela("home");
+          localStorage.setItem("eco_tur_tela", "home");
+        }}
       />
     );
   }
@@ -29,7 +38,14 @@ function App() {
   }
 
   // quando tela === "home"
-  return <HomePage />;
+  return (
+    <HomePage
+      onLogout={() => {
+        localStorage.removeItem("eco_tur_tela"); // apaga o login salvo
+        setTela("login");                        // volta ao login
+      }}
+    />
+  );
 }
 
 export default App;

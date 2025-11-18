@@ -40,7 +40,11 @@ function Rota({ origem, destino }: RotaProps) {
 }
 
 
-function HomePage() {
+  type HomePageProps = {
+    onLogout: () => void;
+  };
+
+  function HomePage({ onLogout }: HomePageProps) {
     const [spots, setSpots] = useState<Spot[]>([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState<string | null>(null);
@@ -260,7 +264,7 @@ function HomePage() {
             {/* BOTÕES INFERIORES (sem lógica ainda) */}
             <div className="home-bottom-actions">
               <button className="home-bottom-button">Configuração</button>
-              <button className="home-bottom-button home-bottom-button-exit">
+              <button className="home-bottom-button home-bottom-button-exit" onClick={onLogout}>
                 Sair
               </button>
             </div>
