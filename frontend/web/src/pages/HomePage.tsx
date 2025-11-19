@@ -72,13 +72,17 @@ function Rota({ origem, destino }: RotaProps) {
     })();
   }, []);
 
-  const praias = spots.filter(
-    (s) => s.category && s.category.toLowerCase() === "praia"
-  );
+    const praias = spots.filter((s) => {
+    if (!s.category) return false;
+    const cat = s.category.trim().toLowerCase();
+    return cat === "praia";
+  });
 
-  const cidades = spots.filter(
-    (s) => s.category && s.category.toLowerCase() === "cidade"
-  );
+    const cidades = spots.filter((s) => {
+    if (!s.category) return false;
+    const cat = s.category.trim().toLowerCase();
+    return cat === "cidade";
+  });
 
   const filtrarPorBusca = (lista: Spot[]) => {
     if (!busca.trim()) return lista;
