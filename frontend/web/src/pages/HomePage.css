@@ -1,11 +1,9 @@
-/* fundo geral da página principal */
 body {
   background-color: #333;
   margin: 0;
-  overflow-x: hidden; /* evita barra de rolagem horizontal geral */
+  overflow-x: hidden; 
 }
 
-/* painel grande centralizado (parecido com login, mas exclusivo da Home) */
 .home-frame {
   width: 100%;
   max-width: 1400px;
@@ -23,22 +21,19 @@ body {
   justify-content: space-between;
 }
 
-/* layout 2 colunas: mapa à esquerda, conteúdo à direita */
 .home-main {
   flex: 1;
   display: grid;
-  grid-template-columns: 1.4fr auto 1.4fr; /* esquerda | divisor | direita */
+  grid-template-columns: 1.4fr auto 1.4fr;
   gap: 0;
 }
 
-/* lado esquerdo */
 .home-left {
   display: flex;
   flex-direction: column;
   padding-right: 16px;
 }
 
-/* topo esquerdo: logo + barra de busca */
 .home-left-header {
   display: flex;
   align-items: center;
@@ -53,7 +48,6 @@ body {
   color: #555;
 }
 
-/* barra de busca */
 .home-search {
   flex: 1;
   display: flex;
@@ -82,7 +76,7 @@ body {
   margin-top: 8px;
   border-radius: 8px;
   overflow: hidden;
-  min-height: 380px; /* garante altura mínima */
+  min-height: 380px;
 }
 .home-map-leaflet,
 .home-map .leaflet-container {
@@ -91,27 +85,23 @@ body {
   min-height: 380px;
 }
 
-/* divisor vertical */
 .home-divider {
   width: 2px;
   background-color: #999;
 }
 
-/* lado direito */
 .home-right {
   display: flex;
   flex-direction: column;
   padding-left: 16px;
 }
 
-/* topo direito: ícones (engrenagem, etc.) */
 .home-right-header {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 12px;
 }
 
-/* seções (Praias, Cidade) */
 .home-section {
   margin-bottom: 24px;
 }
@@ -127,7 +117,6 @@ body {
   color: #606060;
 }
 
-/* linha de cards */
 .home-cards-row {
   margin-top: 16px;
   padding: 12px 16px;
@@ -137,13 +126,12 @@ body {
   display: flex;
   gap: 18px;
 
-  max-width: 621px;      /* ~3 cards de 220px + espaçamento */
-  overflow: hidden;      /* não deixa o container estourar pra fora */
+  max-width: 621px;      
+  overflow: hidden; 
 }
 
-/* transforma em carrossel horizontal */
 .home-cards-carousel {
-  overflow-x: auto;      /* rolagem só dentro da faixa */
+  overflow-x: auto;   
   scroll-snap-type: x mandatory;
 }
 
@@ -156,8 +144,6 @@ body {
   border-radius: 4px;
 }
 
-
-/* transforma em carrossel horizontal */
 .home-cards-carousel {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -172,7 +158,6 @@ body {
   border-radius: 4px;
 }
 
-/* card de ponto turístico */
 .home-card {
   min-width: 220px;
   background-color: transparent;
@@ -209,7 +194,6 @@ body {
   background-position: center;
 }
 
-/* mensagem de erro / vazio */
 .home-error {
   color: #b00020;
   margin-bottom: 8px;
@@ -222,7 +206,6 @@ body {
   align-self: center;
 }
 
-/* botões inferiores (Configuração / Sair) */
 .home-bottom-actions {
   margin-top: auto;
   display: flex;
@@ -258,7 +241,6 @@ body {
   color: #fff;
 }
 
-/* RESPONSIVO: empilha colunas em telas menores */
 @media (max-width: 900px) {
   .home-main {
     grid-template-columns: 1fr;

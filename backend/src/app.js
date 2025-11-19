@@ -6,7 +6,6 @@ import { notFound, errorHandler } from "./middlewares/errors.js";
 
 const app = express();
 
-// CORS BEM SIMPLES: libera tudo
 app.use(
   cors({
     origin: "*",
@@ -15,19 +14,14 @@ app.use(
   })
 );
 
-// pré-flight
 app.options("*", cors());
 
 app.use(express.json());
 
-
-
-// Health check simples
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", service: "eco-tur-backend" });
 });
 
-// Health do banco
 app.get("/db-health", async (req, res) => {
   try {
     const ok = await ping();
@@ -37,7 +31,6 @@ app.get("/db-health", async (req, res) => {
   }
 });
 
-// LISTAR com filtros + paginação real (rota ÚNICA)
 app.get("/api/spots", async (req, res) => {
   try {
     const { category, district, q, limit = 20, offset = 0 } = req.query;
@@ -51,7 +44,6 @@ app.get("/api/spots", async (req, res) => {
       where.push(`(name ILIKE $${params.length} OR description ILIKE $${params.length})`);
     }
 
-    // 1) total (sem limit/offset)
     const countSql = `
       SELECT COUNT(*)::int AS total
       FROM spots
@@ -60,7 +52,6 @@ app.get("/api/spots", async (req, res) => {
     const countRes = await query(countSql, params);
     const total = countRes.rows[0].total;
 
-    // 2) dados paginados
 const dataSql = `
   SELECT
     id,
@@ -94,7 +85,6 @@ const dataSql = `
   }
 });
 
-// DETALHE por id
 app.get("/api/spots/:id", async (req, res) => {
   try {
     const r = await query(
@@ -120,8 +110,6 @@ app.get("/api/spots/:id", async (req, res) => {
   }
 });
 
-
-// CRIAR
 app.post("/api/spots", async (req, res, next) => {
   try {
     const errors = validateSpotPayload(req.body);
@@ -138,7 +126,6 @@ app.post("/api/spots", async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// UPDATE (PUT)
 app.put("/api/spots/:id", async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -160,7 +147,6 @@ app.put("/api/spots/:id", async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// DELETE (mantém igual, só muda catch)
 app.delete("/api/spots/:id", async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -170,7 +156,6 @@ app.delete("/api/spots/:id", async (req, res, next) => {
     res.status(204).send();
   } catch (e) { next(e); }
 });
-// ================== AUTENTICAÇÃO SIMPLES ==================
 
 app.post("/api/users/register", async (req, res, next) => {
   try {
@@ -202,8 +187,6 @@ app.post("/api/users/register", async (req, res, next) => {
   }
 });
 
-
-// Login simples (email + senha)
 app.post("/api/auth/login", async (req, res, next) => {
   try {
     const { email, senha } = req.body;
@@ -223,7 +206,6 @@ app.post("/api/auth/login", async (req, res, next) => {
       return res.status(401).json({ error: "invalid_credentials" });
     }
 
-    // usuário encontrado
     const user = result.rows[0];
     return res.json({ user });
   } catch (e) {
@@ -231,7 +213,6 @@ app.post("/api/auth/login", async (req, res, next) => {
   }
 });
 
-// 404 e handler final
 app.use(notFound);
 app.use(errorHandler);
 

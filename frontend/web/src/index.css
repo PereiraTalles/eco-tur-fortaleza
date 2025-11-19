@@ -3,19 +3,16 @@
   color: #333;
 }
 
-/* títulos e botões com Arial Rounded */
 .login-title,
 .btn {
   font-family: "Arial Rounded MT Bold", Arial, system-ui, sans-serif;
 }
-/* fundo geral */
 body {
   margin: 0;
   padding: 0;
-  background-color: #333; /* fundo escuro externo */
+  background-color: #333; 
 }
 
-/* moldura cinza */
 .app-frame {
   width: 100%;
   max-width: 1400px;
@@ -33,7 +30,6 @@ body {
   justify-content: center;
 }
 
-/* card interno */
 .login-card {
   width: 100%;
   max-width: 900px;
@@ -50,18 +46,16 @@ body {
   gap: 41px;
 }
 
-/* título ECO TUR FORTALEZA */
 .login-title {
   margin: 0;
   text-align: center;
 
-  font-size: 2.6rem;           /* mais forte */
-  font-weight: 600;            /* mais grosso */
-  letter-spacing: 0.20em;      /* mais espaçado */
+  font-size: 2.6rem;           
+  font-weight: 600;           
+  letter-spacing: 0.20em;      
   color: #4d4d4d;
 }
 
-/* formulário */
 .login-form {
   width: 100%;
   max-width: 420px;
@@ -76,7 +70,7 @@ body {
   flex-direction: column;
   gap: 10px;
 
-  font-size: 1.1rem; /* labels maiores */
+  font-size: 1.1rem;
 }
 
 .login-field label {
@@ -101,7 +95,6 @@ body {
   background-color: #fafafa;
 }
 
-/* ações */
 .login-actions {
   margin-top: 12px;
   display: flex;
@@ -137,14 +130,12 @@ body {
   background-color: #f3f3f3;
 }
 
-/* rodapé */
 .app-footer {
   margin-top: 22px;
   font-size: 0.8rem;
   color: #fff;
   text-align: center;
 }
-/* ====== TELA CRIAR CONTA (GRADE 3x2) ====== */
 
 .signup-form {
   width: 120%;
@@ -155,7 +146,6 @@ body {
   align-items: center;
 }
 
-/* 3 colunas x 2 linhas */
 .signup-grid {
   width: 100%;
   display: grid;
@@ -164,7 +154,6 @@ body {
   row-gap: 24px;
 }
 
-/* botões lado a lado, centralizados */
 .signup-actions {
   display: flex;
   justify-content: center;
@@ -172,7 +161,6 @@ body {
   margin-top: 8px;
 }
 
-/* responsivo: empilha em 1 coluna no celular */
 @media (max-width: 900px) {
   .signup-grid {
     grid-template-columns: 1fr;
@@ -186,7 +174,6 @@ body {
   }
 }
 
-/* RESPONSIVO */
 @media (max-width: 900px) {
   .app-frame {
     padding: 24px;

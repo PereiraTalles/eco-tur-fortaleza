@@ -13,7 +13,6 @@ body {
   min-height: 100vh;
 }
 
-/* fundo preto ocupando a tela toda */
 .app-root {
   min-height: 100vh;
   padding: 16px;
@@ -25,7 +24,6 @@ body {
   background-color: #111111;
 }
 
-/* moldura cinza escuro ocupando quase toda a tela */
 .app-frame {
   width: 100%;
   max-width: 1400px;
@@ -42,7 +40,6 @@ body {
   justify-content: center;
 }
 
-/* cartão interno cinza claro centralizado */
 .login-card {
   width: 100%;
   max-width: 900px;
@@ -57,7 +54,6 @@ body {
   gap: 32px;
 }
 
-/* título ECO TUR FORTALEZA */
 .login-title {
   margin: 0;
   text-align: center;
@@ -66,7 +62,6 @@ body {
   color: #555555;
 }
 
-/* formulário */
 .login-form {
   width: 100%;
   max-width: 380px;
@@ -95,7 +90,6 @@ body {
   background-color: #ffffff;
 }
 
-/* botões */
 .login-actions {
   margin-top: 20px;
   display: flex;
@@ -123,7 +117,6 @@ body {
   border: 1px solid #cccccc;
 }
 
-/* rodapé */
 .app-footer {
   margin-top: 24px;
   font-size: 0.8rem;
@@ -131,7 +124,6 @@ body {
   text-align: center;
 }
 
-/* RESPONSIVO (tablet / celular) */
 @media (max-width: 900px) {
   .app-frame {
     padding: 16px;

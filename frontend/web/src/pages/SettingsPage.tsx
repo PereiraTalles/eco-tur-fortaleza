@@ -143,12 +143,6 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
                   <span className="settings-list-label">Espanhol</span>
                 </li>
                 <li>
-                  <span className="settings-list-label">Francês</span>
-                </li>
-                <li>
-                  <span className="settings-list-label">Italiano</span>
-                </li>
-                <li>
                   <span className="settings-list-label">Alemão</span>
                 </li>
               </ul>

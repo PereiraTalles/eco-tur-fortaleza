@@ -37,7 +37,7 @@ const CriarContaPage: React.FC<CriarContaPageProps> = ({ onVoltarLogin }) => {
       });
 
       alert("Conta criada com sucesso!");
-      onVoltarLogin(); // volta pra tela de login
+      onVoltarLogin();
     } catch (error: any) {
       console.error(error);
       alert("Erro ao criar conta. Tente novamente.");

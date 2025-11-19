@@ -1,16 +1,13 @@
--- versão inicial do esquema
--- Tabela de pontos eco (spots)
 CREATE TABLE IF NOT EXISTS spots (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
-  category TEXT NOT NULL,         -- ex: praia, trilha, parque
-  district TEXT,                  -- bairro
+  category TEXT NOT NULL,     
+  district TEXT,                
   description TEXT,
-  rating NUMERIC(2,1) DEFAULT 0,  -- 0.0 a 5.0
+  rating NUMERIC(2,1) DEFAULT 0, 
   created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Usuários (para favorito/avaliações mais tarde)
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
@@ -18,7 +15,6 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Avaliações simples (opcional por enquanto)
 CREATE TABLE IF NOT EXISTS reviews (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id),

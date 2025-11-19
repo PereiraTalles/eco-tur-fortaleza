@@ -1,4 +1,3 @@
-// backend/tests/setup.js
 import { closePool } from "../src/db.js";
 
 afterAll(async () => {

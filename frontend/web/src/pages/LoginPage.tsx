@@ -22,10 +22,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onCriarConta, onLoginSuccess }) =
       setCarregando(true);
       setErro(null);
 
-      // chama o backend (Render)
       await loginUsuario({ email, senha });
 
-      // se der certo, vai para Home
       onLoginSuccess();
     } catch (e: any) {
       console.error(e);

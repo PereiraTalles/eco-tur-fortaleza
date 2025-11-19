@@ -47,7 +47,6 @@ function App() {
     );
   }
 
-  // quando tela === "home"
   return (
     <HomePage
       onLogout={() => {
