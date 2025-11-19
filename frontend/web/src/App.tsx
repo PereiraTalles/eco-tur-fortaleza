@@ -2,7 +2,7 @@ import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import CriarContaPage from "./pages/CriarContaPage";
 import HomePage from "./pages/HomePage";
-import Settings from "./pages/SettingsPage"; // default export do SettingsPage.tsx
+import Settings from "./pages/SettingsPage";
 
 type TelaAtiva = "login" | "cadastro" | "home" | "settings";
 

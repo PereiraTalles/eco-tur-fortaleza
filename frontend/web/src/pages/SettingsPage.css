@@ -10,17 +10,15 @@ body {
   background: #555555;
 }
 
-/* Moldura externa (cinza claro) */
 .settings-frame {
   background: #d9d9d9;
   width: 95%;
-  max-width: 1100px; /* um pouco maior pra ficar parecido com as outras telas */
+  max-width: 1100px;
   border-radius: 8px;
   padding: 24px;
   margin: 32px auto;
 }
 
-/* Bloco interno (cinza escuro) */
 .settings-inner {
   background: #4a4a4a;
   border-radius: 24px;
@@ -28,7 +26,6 @@ body {
   color: #ffffff;
 }
 
-/* Cabeçalho */
 .settings-header {
   display: flex;
   align-items: center;
@@ -42,7 +39,6 @@ body {
   letter-spacing: 2px;
 }
 
-/* Bloco de boas-vindas */
 .settings-welcome {
   background: #5a5a5a;
   border-radius: 18px;
@@ -61,7 +57,6 @@ body {
   opacity: 0.9;
 }
 
-/* Abas (botões de cima) */
 .settings-tabs {
   display: flex;
   gap: 12px;
@@ -95,7 +90,6 @@ body {
   color: #ffffff;
 }
 
-/* Área central (conteúdo da aba) */
 .settings-panel {
   background: #ffffff;
   border-radius: 18px;
@@ -117,7 +111,6 @@ body {
   margin-bottom: 16px;
 }
 
-/* Formulário de perfil */
 .settings-form {
   display: flex;
   flex-direction: column;
@@ -143,7 +136,6 @@ body {
   font-size: 13px;
 }
 
-/* Botão principal (Salvar, Feedback) */
 .settings-primary-button {
   margin-top: 8px;
   display: inline-flex;
@@ -171,7 +163,6 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
 }
 
-/* Lista de idiomas */
 .settings-list {
   list-style: none;
   margin-top: 8px;
@@ -201,7 +192,6 @@ body {
   padding: 2px 8px;
 }
 
-/* Toggle de notificações */
 .settings-toggle {
   display: flex;
   align-items: center;
@@ -253,7 +243,6 @@ body {
   color: #777777;
 }
 
-/* Botões fixos embaixo (Voltar, Sair, Apagar) */
 .settings-bottom-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -292,7 +281,6 @@ body {
   background: #d0002a;
 }
 
-/* Rodapé */
 .settings-footer {
   text-align: center;
   font-size: 11px;
@@ -300,7 +288,6 @@ body {
   margin-top: 10px;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
   .settings-frame {
     padding: 16px;

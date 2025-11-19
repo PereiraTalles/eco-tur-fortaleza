@@ -1,6 +1,3 @@
-// src/services/api.ts
-
-// Base da API: apontando para o backend do Render
 const API_BASE_URL = "https://eco-tur-fortaleza.onrender.com";
 
 type HttpMethod = "GET" | "POST";
@@ -42,8 +39,6 @@ async function request<TResponse>(
   return (await res.json()) as TResponse;
 }
 
-// --------- USUÁRIO / AUTENTICAÇÃO ---------
-
 export type User = {
   id: number;
   name: string;
@@ -75,7 +70,6 @@ export async function loginUsuario(dados: {
   return resp;
 }
 
-// (se você ainda usa essa função em outro lugar, pode manter)
 type CriarContaPayload = {
   nome: string;
   sobrenome: string;
@@ -96,8 +90,6 @@ export async function criarUsuario(dados: CriarContaPayload) {
   });
 }
 
-// --------- SPOTS / PONTOS TURÍSTICOS ---------
-
 export type Spot = {
   id: number;
   name: string;
@@ -111,5 +103,7 @@ export type Spot = {
 };
 
 export async function listarSpots() {
-  return request<{ data: Spot[]; meta: unknown }>("/api/spots");
+  return request<{ data: Spot[]; meta: unknown }>(
+    "/api/spots?limit=1000&offset=0"
+  );
 }

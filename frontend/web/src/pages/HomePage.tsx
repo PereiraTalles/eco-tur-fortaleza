@@ -30,7 +30,6 @@ function Rota({ origem, destino }: RotaProps) {
       show: false,
     }).addTo(map);
 
-    // limpar a rota antiga quando origem/destino mudarem
     return () => {
       map.removeControl(routingControl);
     };
@@ -38,8 +37,6 @@ function Rota({ origem, destino }: RotaProps) {
 
   return null;
 }
-
-
   type HomePageProps = {
     onLogout: () => void;
     onSettings: () => void;
@@ -53,7 +50,6 @@ function Rota({ origem, destino }: RotaProps) {
       const [origem, setOrigem] = useState<[number, number] | null>(null);
       const [destino, setDestino] = useState<[number, number] | null>(null);
 
-  // centro padrão do mapa (Fortaleza)
   const fortalezaCenter: [number, number] = [-3.7319, -38.5267];
 
   useEffect(() => {
@@ -109,27 +105,23 @@ function Rota({ origem, destino }: RotaProps) {
   }
     function handleCardClick(spot: Spot) {
   if (spot.latitude != null && spot.longitude != null) {
-    // destino = ponto clicado
+ 
     setDestino([spot.latitude, spot.longitude]);
   } else {
     alert("Esse ponto ainda não tem coordenadas cadastradas.");
-    // PLANO B - abre no Google Maps
+  
     abrirNoMaps(spot);
     return;
   }
 
-  // tentar pegar localização do usuário (GPS)
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        // deu certo → seta origem e seguimos
         setOrigem([position.coords.latitude, position.coords.longitude]);
       },
       (error) => {
         console.error(error);
         alert("Não foi possível obter sua localização. Abrindo no Maps…");
-
-        // PLANO B: abre no Google Maps
         abrirNoMaps(spot);
       }
     );
