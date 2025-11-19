@@ -42,15 +42,16 @@ function Rota({ origem, destino }: RotaProps) {
 
   type HomePageProps = {
     onLogout: () => void;
+    onSettings: () => void;
   };
 
-  function HomePage({ onLogout }: HomePageProps) {
-    const [spots, setSpots] = useState<Spot[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [erro, setErro] = useState<string | null>(null);
-    const [busca, setBusca] = useState("");
-    const [origem, setOrigem] = useState<[number, number] | null>(null);
-    const [destino, setDestino] = useState<[number, number] | null>(null);
+  function HomePage({ onLogout, onSettings }: HomePageProps){
+      const [spots, setSpots] = useState<Spot[]>([]);
+      const [loading, setLoading] = useState(true);
+      const [erro, setErro] = useState<string | null>(null);
+      const [busca, setBusca] = useState("");
+      const [origem, setOrigem] = useState<[number, number] | null>(null);
+      const [destino, setDestino] = useState<[number, number] | null>(null);
 
   // centro padrão do mapa (Fortaleza)
   const fortalezaCenter: [number, number] = [-3.7319, -38.5267];
@@ -261,9 +262,11 @@ function Rota({ origem, destino }: RotaProps) {
               </div>
             </section>
 
-            {/* BOTÕES INFERIORES (sem lógica ainda) */}
+            {/* BOTÕES INFERIORES (sem lógica ainda) */} 
             <div className="home-bottom-actions">
-              <button className="home-bottom-button">Configuração</button>
+              <button className="home-bottom-button" onClick={onSettings}>
+                Configuração
+              </button>
               <button className="home-bottom-button home-bottom-button-exit" onClick={onLogout}>
                 Sair
               </button>
