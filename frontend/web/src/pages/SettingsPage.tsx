@@ -79,72 +79,49 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
         <section className="settings-panel">
           {abaAtiva === "perfil" && (
             <div className="settings-panel-content">
-              <h2>Editar Perfil</h2>
-              <p className="settings-panel-text">
-                Atualize as informações que você usou no cadastro. No futuro
-                esses dados serão carregados automaticamente.
-              </p>
+                <h2>Editar Perfil</h2>
 
-              <form className="settings-form">
-                <div className="settings-form-row">
-                  <label htmlFor="nome">Nome</label>
-                  <input
-                    id="nome"
-                    type="text"
-                    placeholder="Seu nome"
-                    autoComplete="name"
-                  />
+                <form className="settings-form-grid">
+                <div className="settings-form-item">
+                    <label>Nome</label>
+                    <input type="text" placeholder="Seu nome" />
                 </div>
 
-                <div className="settings-form-row">
-                  <label htmlFor="sobrenome">Sobrenome</label>
-                  <input
-                    id="sobrenome"
-                    type="text"
-                    placeholder="Seu sobrenome"
-                    autoComplete="family-name"
-                  />
+                <div className="settings-form-item">
+                    <label>Email</label>
+                    <input type="email" placeholder="seuemail@exemplo.com" />
                 </div>
 
-                <div className="settings-form-row">
-                  <label htmlFor="email">E-mail</label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="seuemail@exemplo.com"
-                    autoComplete="email"
-                  />
+                <div className="settings-form-item">
+                    <label>Senha atual</label>
+                    <input type="password" placeholder="••••••••" />
                 </div>
 
-                <div className="settings-form-row">
-                  <label htmlFor="senha">Senha</label>
-                  <input
-                    id="senha"
-                    type="password"
-                    placeholder="••••••••"
-                    autoComplete="new-password"
-                  />
+                <div className="settings-form-item">
+                    <label>Sobrenome</label>
+                    <input type="text" placeholder="Seu sobrenome" />
                 </div>
 
-                <div className="settings-form-row">
-                  <label htmlFor="senha-confirma">Confirmar senha</label>
-                  <input
-                    id="senha-confirma"
-                    type="password"
-                    placeholder="Repita a nova senha"
-                    autoComplete="new-password"
-                  />
+                <div className="settings-form-item">
+                    <label>Cidade</label>
+                    <input type="text" placeholder="Sua cidade" />
                 </div>
+
+                <div className="settings-form-item">
+                    <label>Nova senha</label>
+                    <input type="password" placeholder="Nova senha" />
+                </div>
+                </form>
 
                 <button
-                  type="button"
-                  className="settings-primary-button"
+                type="button"
+                className="settings-primary-button"
                 >
-                  Salvar alterações
+                Salvar alterações
                 </button>
-              </form>
             </div>
-          )}
+            )}
+
 
           {abaAtiva === "idioma" && (
             <div className="settings-panel-content">
@@ -257,7 +234,7 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
       </div>
 
       <footer className="settings-footer">
-        © Copyright Eco Fortaleza Todos os Direitos Reservados
+        © Copyright Eco Fortaleza <br/> Todos os Direitos Reservados
       </footer>
     </div>
   );

@@ -301,3 +301,64 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.settings-frame {
+  max-width: 1000px;
+  padding: 18px;
+}
+
+.settings-inner {
+  padding: 18px 24px 24px;
+}
+
+.settings-panel {
+  min-height: 150px;
+  padding: 16px;
+}
+
+.settings-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 18px;
+  margin-bottom: 12px;
+}
+
+.settings-form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-form-item label {
+  font-size: 12px;
+  color: #444;
+}
+
+.settings-form-item input {
+  padding: 6px 8px;
+  font-size: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.settings-welcome h1 {
+  font-size: 16px;
+}
+
+.settings-welcome p {
+  font-size: 12px;
+}
+
+.settings-tabs button {
+  padding: 6px 14px;
+  font-size: 12px;
+}
+
+.settings-card--exit {
+  padding: 10px;
+  font-size: 14px;
+}
+
+body, html {
+  overflow-y: hidden;
+}
