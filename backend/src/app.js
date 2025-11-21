@@ -71,7 +71,6 @@ const dataSql = `
 `;
     const dataRes = await query(dataSql, [...params, Number(limit), Number(offset)]);
 
-    // 3) meta de paginação
     const page = Math.floor(Number(offset) / Number(limit)) + 1;
     const totalPages = Math.max(1, Math.ceil(total / Number(limit)));
 
@@ -212,7 +211,66 @@ app.post("/api/auth/login", async (req, res, next) => {
     next(e);
   }
 });
+app.put("/api/users/:id", async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: "invalid_id" });
+    }
 
+    const { nome, sobrenome, cidade, email, senha } = req.body;
+
+    if (!nome || !sobrenome || !cidade || !email) {
+      return res
+        .status(400)
+        .json({ error: "missing_fields", message: "Campos obrigatórios ausentes." });
+    }
+
+    const result = await query(
+      `
+      UPDATE users
+      SET
+        name = $1,
+        sobrenome = $2,
+        cidade = $3,
+        email = $4,
+        password = COALESCE($5, password)
+      WHERE id = $6
+      RETURNING id, name, sobrenome, cidade, email
+      `,
+      [nome, sobrenome, cidade, email, senha || null, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "not_found" });
+    }
+
+    const user = result.rows[0];
+    return res.json({ user });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.delete("/api/users/:id", async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: "invalid_id" });
+    }
+
+    const r = await query("DELETE FROM users WHERE id = $1", [id]);
+
+    if (r.rowCount === 0) {
+      return res.status(404).json({ error: "not_found" });
+    }
+
+    // sem conteúdo, só status 204 = deu certo
+    return res.status(204).send();
+  } catch (e) {
+    next(e);
+  }
+});
 app.use(notFound);
 app.use(errorHandler);
 
