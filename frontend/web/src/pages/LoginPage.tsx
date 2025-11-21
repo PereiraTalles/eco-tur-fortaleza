@@ -12,28 +12,33 @@ const LoginPage: React.FC<LoginPageProps> = ({ onCriarConta, onLoginSuccess }) =
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
-  const handleLogin = async () => {
-    if (!email || !senha) {
-      setErro("Preencha e-mail e senha.");
-      return;
-    }
+const handleLogin = async () => {
+  if (!email || !senha) {
+    setErro("Preencha e-mail e senha.");
+    return;
+  }
 
-    try {
-      setCarregando(true);
-      setErro(null);
+  try {
+    setCarregando(true);
+    setErro(null);
 
-      await loginUsuario({ email, senha });
+    // pega o usuário que vem do backend
+    const resp = await loginUsuario({ email, senha });
+    const user = resp.user;
 
-      onLoginSuccess();
-    } catch (e: any) {
-      console.error(e);
-      setErro(
-        e?.message || "Não foi possível fazer login. Tente novamente."
-      );
-    } finally {
-      setCarregando(false);
-    }
-  };
+    // salva o usuário no localStorage para as Configurações usarem depois
+    localStorage.setItem("eco_tur_user", JSON.stringify(user));
+
+    onLoginSuccess();
+  } catch (e: any) {
+    console.error(e);
+    setErro(
+      e?.message || "Não foi possível fazer login. Tente novamente."
+    );
+  } finally {
+    setCarregando(false);
+  }
+};
 
   return (
     <div>

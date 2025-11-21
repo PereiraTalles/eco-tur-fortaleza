@@ -1,6 +1,6 @@
 const API_BASE_URL = "https://eco-tur-fortaleza.onrender.com";
 
-type HttpMethod = "GET" | "POST";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 async function request<TResponse>(
   path: string,
@@ -68,6 +68,38 @@ export async function loginUsuario(dados: {
     body: dados,
   });
   return resp;
+}
+type AtualizarUsuarioPayload = {
+  nome: string;
+  sobrenome: string;
+  cidade: string;
+  email: string;
+  senha?: string; // opcional, se vier vazio mantém a antiga
+};
+
+export async function atualizarUsuario(
+  id: number,
+  dados: AtualizarUsuarioPayload
+) {
+  return request<{
+    user: {
+      id: number;
+      name: string;
+      email: string;
+      sobrenome?: string;
+      cidade?: string;
+    };
+  }>(`/api/users/${id}`, {
+    method: "PUT",
+    body: dados,
+  });
+}
+
+export async function deletarUsuario(id: number) {
+  // backend retorna 204 (sem corpo), o request já trata isso
+  return request<void>(`/api/users/${id}`, {
+    method: "DELETE",
+  });
 }
 
 type CriarContaPayload = {

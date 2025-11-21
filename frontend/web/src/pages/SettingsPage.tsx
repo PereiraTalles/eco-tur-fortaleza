@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./SettingsPage.css";
+import { atualizarUsuario, deletarUsuario } from "../services/api";
 
 type SettingsPageProps = {
   onBackHome: () => void;
@@ -8,8 +9,137 @@ type SettingsPageProps = {
 
 type AbaAtiva = "perfil" | "idioma" | "notificacoes" | "feedback";
 
+type UsuarioLocal = {
+  id: number;
+  name: string;
+  email: string;
+  sobrenome?: string;
+  cidade?: string;
+};
+
 function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
   const [abaAtiva, setAbaAtiva] = useState<AbaAtiva>("perfil");
+
+  const [usuario, setUsuario] = useState<UsuarioLocal | null>(null);
+
+  const [nome, setNome] = useState("");
+  const [sobrenome, setSobrenome] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [email, setEmail] = useState("");
+  const [senhaAtual, setSenhaAtual] = useState("");
+  const [novaSenha, setNovaSenha] = useState("");
+
+  const [salvando, setSalvando] = useState(false);
+  const [mensagem, setMensagem] = useState<string | null>(null);
+  const [erro, setErro] = useState<string | null>(null);
+
+  // Carregar usuário do localStorage ao abrir Configurações
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("eco_tur_user");
+      if (!raw) return;
+
+      const u = JSON.parse(raw) as UsuarioLocal;
+      setUsuario(u);
+
+      setNome(u.name || "");
+      setEmail(u.email || "");
+      setSobrenome(u.sobrenome || "");
+      setCidade(u.cidade || "");
+    } catch (e) {
+      console.error("Erro ao ler eco_tur_user:", e);
+    }
+  }, []);
+
+  async function handleSalvarPerfil() {
+    if (!usuario) {
+      setErro("Usuário não encontrado. Faça login novamente.");
+      return;
+    }
+
+    if (!nome || !sobrenome || !cidade || !email) {
+      setErro("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    try {
+      setSalvando(true);
+      setErro(null);
+      setMensagem(null);
+
+      const payload = {
+        nome,
+        sobrenome,
+        cidade,
+        email,
+        // se quiser já usar a novaSenha, pode mandar aqui
+        senha: novaSenha ? novaSenha : undefined,
+      };
+
+      const resp = await atualizarUsuario(usuario.id, payload);
+      const userAtualizado = resp.user;
+
+      // Atualiza localStorage com o novo usuário
+      const atualizadoLocal: UsuarioLocal = {
+        id: userAtualizado.id,
+        name: userAtualizado.name,
+        email: userAtualizado.email,
+        sobrenome: userAtualizado.sobrenome,
+        cidade: userAtualizado.cidade,
+      };
+
+      localStorage.setItem("eco_tur_user", JSON.stringify(atualizadoLocal));
+      setUsuario(atualizadoLocal);
+
+      setMensagem("Alterações salvas com sucesso!");
+      setSenhaAtual("");
+      setNovaSenha("");
+    } catch (e: any) {
+      console.error(e);
+      setErro(
+        e?.message ||
+          "Não foi possível salvar as alterações. Tente novamente."
+      );
+    } finally {
+      setSalvando(false);
+    }
+  }
+
+  async function handleApagarConta() {
+    if (!usuario) {
+      setErro("Usuário não encontrado. Faça login novamente.");
+      return;
+    }
+
+    const confirmar = window.confirm(
+      "Tem certeza que deseja apagar sua conta? Esta ação não pode ser desfeita."
+    );
+
+    if (!confirmar) return;
+
+    try {
+      setSalvando(true);
+      setErro(null);
+      setMensagem(null);
+
+      await deletarUsuario(usuario.id);
+
+      // limpa localStorage e volta pro fluxo de logout
+      localStorage.removeItem("eco_tur_user");
+      localStorage.removeItem("eco_tur_tela");
+
+      alert("Conta apagada com sucesso.");
+      onLogout();
+    } catch (e: any) {
+      console.error(e);
+      setErro(
+        e?.message ||
+          "Não foi possível apagar sua conta. Tente novamente."
+      );
+    } finally {
+      setSalvando(false);
+    }
+  }
 
   return (
     <div className="settings-frame">
@@ -75,53 +205,96 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
           </button>
         </nav>
 
-        {/* Área central que troca de acordo com a aba (os outros ficam "hidden") */}
+        {/* Mensagens de erro/sucesso */}
+        {(erro || mensagem) && (
+          <div style={{ marginBottom: 10 }}>
+            {erro && (
+              <p style={{ color: "#ffb3b3", fontSize: 12 }}>{erro}</p>
+            )}
+            {mensagem && (
+              <p style={{ color: "#b2ffb2", fontSize: 12 }}>{mensagem}</p>
+            )}
+          </div>
+        )}
+
+        {/* Área central que troca de acordo com a aba */}
         <section className="settings-panel">
           {abaAtiva === "perfil" && (
             <div className="settings-panel-content">
-                <h2>Editar Perfil</h2>
+              <h2>Editar Perfil</h2>
 
-                <form className="settings-form-grid">
+              <form className="settings-form-grid">
                 <div className="settings-form-item">
-                    <label>Nome</label>
-                    <input type="text" placeholder="Seu nome" />
+                  <label>Nome</label>
+                  <input
+                    type="text"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    placeholder="Seu nome"
+                  />
                 </div>
 
                 <div className="settings-form-item">
-                    <label>Email</label>
-                    <input type="email" placeholder="seuemail@exemplo.com" />
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="seuemail@exemplo.com"
+                  />
                 </div>
 
                 <div className="settings-form-item">
-                    <label>Senha atual</label>
-                    <input type="password" placeholder="••••••••" />
+                  <label>Senha atual</label>
+                  <input
+                    type="password"
+                    value={senhaAtual}
+                    onChange={(e) => setSenhaAtual(e.target.value)}
+                    placeholder="••••••••"
+                  />
                 </div>
 
                 <div className="settings-form-item">
-                    <label>Sobrenome</label>
-                    <input type="text" placeholder="Seu sobrenome" />
+                  <label>Sobrenome</label>
+                  <input
+                    type="text"
+                    value={sobrenome}
+                    onChange={(e) => setSobrenome(e.target.value)}
+                    placeholder="Seu sobrenome"
+                  />
                 </div>
 
                 <div className="settings-form-item">
-                    <label>Cidade</label>
-                    <input type="text" placeholder="Sua cidade" />
+                  <label>Cidade</label>
+                  <input
+                    type="text"
+                    value={cidade}
+                    onChange={(e) => setCidade(e.target.value)}
+                    placeholder="Sua cidade"
+                  />
                 </div>
 
                 <div className="settings-form-item">
-                    <label>Nova senha</label>
-                    <input type="password" placeholder="Nova senha" />
+                  <label>Nova senha</label>
+                  <input
+                    type="password"
+                    value={novaSenha}
+                    onChange={(e) => setNovaSenha(e.target.value)}
+                    placeholder="Nova senha"
+                  />
                 </div>
-                </form>
+              </form>
 
-                <button
+              <button
                 type="button"
                 className="settings-primary-button"
-                >
-                Salvar alterações
-                </button>
+                onClick={handleSalvarPerfil}
+                disabled={salvando}
+              >
+                {salvando ? "Salvando..." : "Salvar alterações"}
+              </button>
             </div>
-            )}
-
+          )}
 
           {abaAtiva === "idioma" && (
             <div className="settings-panel-content">
@@ -141,6 +314,12 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
                 </li>
                 <li>
                   <span className="settings-list-label">Espanhol</span>
+                </li>
+                <li>
+                  <span className="settings-list-label">Francês</span>
+                </li>
+                <li>
+                  <span className="settings-list-label">Italiano</span>
                 </li>
                 <li>
                   <span className="settings-list-label">Alemão</span>
@@ -221,6 +400,8 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
           <button
             type="button"
             className="settings-card--exit settings-card--danger"
+            onClick={handleApagarConta}
+            disabled={salvando}
           >
             Apagar Conta
           </button>
@@ -228,7 +409,7 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
       </div>
 
       <footer className="settings-footer">
-        © Copyright Eco Fortaleza <br/> Todos os Direitos Reservados
+        © Copyright Eco Fortaleza Todos os Direitos Reservados
       </footer>
     </div>
   );
