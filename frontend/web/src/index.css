@@ -3,8 +3,6 @@
   color: #333;
 }
 
-/* ----------------- BASE ----------------- */
-
 body {
   margin: 0;
   padding: 0;
@@ -16,11 +14,9 @@ body {
   font-family: "Arial Rounded MT Bold", Arial, system-ui, sans-serif;
 }
 
-/* ----------------- CONTAINER GERAL ----------------- */
-
 .app-frame {
   width: 100%;
-  max-width: 480px;       /* foco em celular no padrão */
+  max-width: 480px;       
   min-height: 100vh;
 
   margin: 0 auto;
@@ -37,8 +33,6 @@ body {
   overflow: hidden;
   background-color: transparent;
 }
-
-/* fundo com a imagem */
 
 .app-frame::before {
   content: "";
@@ -60,8 +54,6 @@ body {
   z-index: 2;
 }
 
-/* ----------------- CARD PRINCIPAL (LOGIN / CRIAR CONTA) ----------------- */
-
 .login-card {
   width: 100%;
   max-width: 420px;
@@ -77,8 +69,6 @@ body {
   gap: 16px;
 }
 
-/* título ECO TUR FORTALEZA */
-
 .login-title {
   margin: 0;
   text-align: center;
@@ -88,8 +78,6 @@ body {
   letter-spacing: 0.18em;
   color: #fff;
 }
-
-/* ----------------- FORM DE LOGIN ----------------- */
 
 .login-form {
   width: 100%;
@@ -128,8 +116,6 @@ body {
   background-color: #fafafa;
 }
 
-/* botões do login (padrão: coluna, bom para celular) */
-
 .login-actions {
   margin-top: 8px;
   display: flex;
@@ -139,8 +125,6 @@ body {
   width: 100%;
   max-width: 360px;
 }
-
-/* ----------------- BOTÕES ----------------- */
 
 .btn {
   width: 100%;
@@ -173,16 +157,12 @@ body {
   background-color: #f3f3f3;
 }
 
-/* rodapé */
-
 .app-footer {
   margin-top: 10px;
   font-size: 0.75rem;
   color: #fff;
   text-align: center;
 }
-
-/* ----------------- FORM DE CRIAR CONTA ----------------- */
 
 .signup-form {
   width: 100%;
@@ -194,16 +174,12 @@ body {
   align-items: center;
 }
 
-/* grid com os campos (nome, email, cidade etc.) */
-
 .signup-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr;   /* tudo em 1 coluna no mobile */
+  grid-template-columns: 1fr;   
   row-gap: 14px;
 }
-
-/* ações do formulário de criar conta */
 
 .signup-actions {
   width: 100%;
@@ -214,8 +190,6 @@ body {
   gap: 10px;
   margin-top: 4px;
 }
-
-/* ----------------- RESPONSIVIDADE PARA TELAS MÉDIAS (TABLET / NOTE) ----------------- */
 
 @media (min-width: 768px) {
   .app-frame {
@@ -237,13 +211,13 @@ body {
   }
 
   .login-actions {
-    flex-direction: row;          /* botões lado a lado */
+    flex-direction: row;          
     justify-content: center;
     max-width: 420px;
   }
 
   .signup-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 colunas no desktop/tablet */
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
     column-gap: 20px;
   }
 
@@ -258,11 +232,9 @@ body {
   }
 }
 
-/* ----------------- RESPONSIVIDADE PARA TELAS GRANDES (PC) ----------------- */
-
 @media (min-width: 1000px) {
   .app-frame {
-    max-width: 1300px;   /* imagem grande, como você gostou */
+    max-width: 1300px;   
     min-height: 87vh;
     margin-top: 40px;
     border-radius: 32px;
@@ -280,11 +252,11 @@ body {
   }
 
   .login-form {
-    max-width: 420px;   /* evita inputs enormes */
+    max-width: 420px; 
     gap: 16px;
   }
 
   .login-actions {
-    max-width: 420px;   /* mesmos limites dos campos */
+    max-width: 420px;
   }
 }

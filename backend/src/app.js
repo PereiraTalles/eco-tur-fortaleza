@@ -265,7 +265,6 @@ app.delete("/api/users/:id", async (req, res, next) => {
       return res.status(404).json({ error: "not_found" });
     }
 
-    // sem conteúdo, só status 204 = deu certo
     return res.status(204).send();
   } catch (e) {
     next(e);

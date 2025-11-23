@@ -7,8 +7,6 @@ import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import L from "leaflet";
 
-// --- Componentes Auxiliares do Mapa ---
-
 type RotaProps = {
   origem: [number, number] | null;
   destino: [number, number] | null;
@@ -52,8 +50,6 @@ function MapResizer() {
   }, [map]);
   return null;
 }
-
-// --- Componente Principal ---
 
 type HomePageProps = {
   onLogout: () => void;
@@ -115,10 +111,8 @@ function HomePage({ onLogout, onSettings }: HomePageProps) {
   }
 
   function handleCardClick(spot: Spot) {
-    // 1. Fecha o menu mobile se estiver aberto
     setMenuAberto(false);
 
-    // 2. Lógica de rota
     if (spot.latitude != null && spot.longitude != null) {
       setDestino([spot.latitude, spot.longitude]);
     } else {

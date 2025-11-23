@@ -1,4 +1,3 @@
-/* ===================== GERAL / DESKTOP ===================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,17 +6,17 @@
 }
 
 body {
-  background: #333; /* Fundo escuro igual ao Home */
+  background: #333; 
   width: 100vw;
   height: 100vh;
-  overflow: hidden; /* Evita scroll na página inteira no PC */
+  overflow: hidden; 
 }
 
 .settings-frame {
   width: 100%;
   max-width: 1100px;
-  height: 90vh; /* Altura fixa no PC */
-  margin: 5vh auto; /* Centralizado verticalmente */
+  height: 90vh; 
+  margin: 5vh auto; 
   
   background: #d9d9d9;
   border-radius: 32px;
@@ -33,13 +32,12 @@ body {
   padding: 24px 32px;
   color: #ffffff;
   
-  flex: 1; /* Ocupa todo espaço disponível dentro do frame */
+  flex: 1; 
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* O scroll será interno se precisar */
+  overflow: hidden; 
 }
 
-/* Cabeçalho */
 .settings-header {
   display: flex;
   align-items: center;
@@ -54,7 +52,6 @@ body {
   letter-spacing: 2px;
 }
 
-/* Área de Boas Vindas */
 .settings-welcome {
   background: #5a5a5a;
   border-radius: 18px;
@@ -76,7 +73,6 @@ body {
   color: #ddd;
 }
 
-/* Abas de Navegação */
 .settings-tabs {
   display: flex;
   gap: 12px;
@@ -107,17 +103,14 @@ body {
   box-shadow: 0 2px 8px rgba(176, 0, 32, 0.4);
 }
 
-/* Painel de Conteúdo (Formulários) */
 .settings-panel {
   background: #ffffff;
   border-radius: 18px;
   padding: 20px;
   color: #333333;
-  flex: 1; /* Cresce para ocupar o meio */
-  overflow-y: auto; /* Permite scroll apenas aqui se for muito grande */
+  flex: 1; 
+  overflow-y: auto; 
   margin-bottom: 16px;
-  
-  /* Estilização da barra de rolagem interna */
   scrollbar-width: thin;
   scrollbar-color: #ccc transparent;
 }
@@ -134,10 +127,8 @@ body {
   margin-bottom: 16px;
 }
 
-/* GRID DO FORMULÁRIO - A Mágica acontece aqui */
 .settings-form-grid {
   display: grid;
-  /* Desktop: 3 colunas iguais */
   grid-template-columns: repeat(3, 1fr); 
   gap: 16px;
   margin-bottom: 20px;
@@ -169,7 +160,6 @@ body {
   background-color: #fafafa;
 }
 
-/* Botão Principal (Salvar/Link) */
 .settings-primary-button {
   display: inline-flex;
   align-items: center;
@@ -195,7 +185,6 @@ body {
   cursor: not-allowed;
 }
 
-/* Listas (Idiomas) */
 .settings-list {
   list-style: none;
   display: flex;
@@ -220,7 +209,6 @@ body {
   padding: 2px 8px;
 }
 
-/* Toggle Switch */
 .settings-toggle {
   display: flex;
   align-items: center;
@@ -253,7 +241,6 @@ body {
 .settings-toggle input:checked + .settings-toggle-slider::before { transform: translateX(20px); }
 .settings-toggle-label { font-size: 13px; color: #444; }
 
-/* Botões do Rodapé */
 .settings-bottom-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -299,10 +286,9 @@ body {
     margin: 0;
     padding: 0;
     border-radius: 0;
-    background: #4a4a4a; /* Fundo direto escuro */
+    background: #4a4a4a; 
   }
 
-  /* 2. Remove o container interno "card" e deixa fluído */
   .settings-inner {
     border-radius: 0;
     padding: 20px;
@@ -310,12 +296,10 @@ body {
     background: transparent;
   }
 
-  /* 3. Esconde o bloco de Boas-vindas */
   .settings-welcome {
     display: none;
   }
 
-  /* 4. Ajusta Cabeçalho */
   .settings-header {
     justify-content: center;
     margin-bottom: 24px;
@@ -328,30 +312,27 @@ body {
     font-size: 20px;
   }
 
-  /* 5. Abas com scroll horizontal se precisar */
   .settings-tabs {
     flex-wrap: nowrap;
     overflow-x: auto;
     padding-bottom: 5px;
   }
   .settings-tab {
-    flex-shrink: 0; /* Não deixa encolher */
+    flex-shrink: 0;
   }
 
-  /* 6. Formulário em Coluna Única (Estica na tela) */
   .settings-form-grid {
-    grid-template-columns: 1fr; /* 1 Coluna só! */
-    gap: 18px; /* Mais espaço entre os inputs */
+    grid-template-columns: 1fr; 
+    gap: 18px; 
   }
 
   .settings-form-item input {
-    padding: 14px; /* Input maior para dedo */
-    font-size: 16px; /* Letra maior para ler */
+    padding: 14px; 
+    font-size: 16px; 
   }
 
-  /* 7. Botões do fundo empilhados */
   .settings-bottom-row {
-    grid-template-columns: 1fr; /* Um em cima do outro */
+    grid-template-columns: 1fr;
     gap: 12px;
   }
   
@@ -360,7 +341,6 @@ body {
     font-size: 16px;
   }
   
-  /* Footer some ou diminui */
   .settings-footer {
     display: none; 
   }

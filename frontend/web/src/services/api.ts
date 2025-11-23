@@ -74,7 +74,7 @@ type AtualizarUsuarioPayload = {
   sobrenome: string;
   cidade: string;
   email: string;
-  senha?: string; // opcional, se vier vazio mantém a antiga
+  senha?: string;
 };
 
 export async function atualizarUsuario(
@@ -96,7 +96,6 @@ export async function atualizarUsuario(
 }
 
 export async function deletarUsuario(id: number) {
-  // backend retorna 204 (sem corpo), o request já trata isso
   return request<void>(`/api/users/${id}`, {
     method: "DELETE",
   });

@@ -22,11 +22,9 @@ const handleLogin = async () => {
     setCarregando(true);
     setErro(null);
 
-    // pega o usuário que vem do backend
     const resp = await loginUsuario({ email, senha });
     const user = resp.user;
 
-    // salva o usuário no localStorage para as Configurações usarem depois
     localStorage.setItem("eco_tur_user", JSON.stringify(user));
 
     onLoginSuccess();

@@ -32,13 +32,11 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
   const [mensagem, setMensagem] = useState<string | null>(null);
   const [erro, setErro] = useState<string | null>(null);
 
-  // Limpa mensagens ao trocar de aba
   useEffect(() => {
     setMensagem(null);
     setErro(null);
   }, [abaAtiva]);
 
-  // Carregar usuário do localStorage
   useEffect(() => {
     try {
       const raw = localStorage.getItem("eco_tur_user");
