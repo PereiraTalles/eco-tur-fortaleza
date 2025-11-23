@@ -26,7 +26,6 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
   const [sobrenome, setSobrenome] = useState("");
   const [cidade, setCidade] = useState("");
   const [email, setEmail] = useState("");
-  const [senhaAtual, setSenhaAtual] = useState("");
   const [novaSenha, setNovaSenha] = useState("");
 
   const [salvando, setSalvando] = useState(false);
@@ -96,7 +95,6 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
       setUsuario(atualizadoLocal);
 
       setMensagem("Alterações salvas com sucesso!");
-      setSenhaAtual("");
       setNovaSenha("");
     } catch (e: any) {
       console.error(e);
