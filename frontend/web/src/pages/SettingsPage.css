@@ -276,26 +276,39 @@ body {
   margin-top: 10px;
 }
 
-/* ===================== RESPONSIVIDADE (MOBILE) ===================== */
 @media (max-width: 900px) {
-  
-  /* 1. Ocupar tela toda */
+  body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
   .settings-frame {
     width: 100vw;
-    height: 100vh;
+    height: auto !important;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
     border-radius: 0;
-    background: #4a4a4a; 
+    background: #4a4a4a;
+    display: block; 
+    overflow-y: visible; 
   }
 
   .settings-inner {
     border-radius: 0;
-    padding: 20px;
-    height: 100%;
+    padding: 20px 20px 60px 20px;
+    height: auto !important;
     background: transparent;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
   }
 
+  .settings-panel {
+    overflow: visible !important;
+    height: auto !important;    
+    flex: none;                  
+  }
   .settings-welcome {
     display: none;
   }
