@@ -1,217 +1,243 @@
+/* ===================== GERAL / DESKTOP ===================== */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: "Arial Rounded MT Bold", Arial, system-ui, sans-serif;
 }
 
 body {
-  background: #555555;
+  background: #333; /* Fundo escuro igual ao Home */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Evita scroll na página inteira no PC */
 }
 
 .settings-frame {
-  background: #d9d9d9;
-  width: 95%;
+  width: 100%;
   max-width: 1100px;
-  border-radius: 8px;
+  height: 90vh; /* Altura fixa no PC */
+  margin: 5vh auto; /* Centralizado verticalmente */
+  
+  background: #d9d9d9;
+  border-radius: 32px;
   padding: 24px;
-  margin: 32px auto;
+  
+  display: flex;
+  flex-direction: column;
 }
 
 .settings-inner {
   background: #4a4a4a;
   border-radius: 24px;
-  padding: 24px 32px 32px;
+  padding: 24px 32px;
   color: #ffffff;
+  
+  flex: 1; /* Ocupa todo espaço disponível dentro do frame */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* O scroll será interno se precisar */
 }
 
+/* Cabeçalho */
 .settings-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .settings-logo {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: 2px;
 }
 
+/* Área de Boas Vindas */
 .settings-welcome {
   background: #5a5a5a;
   border-radius: 18px;
   padding: 16px 20px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .settings-welcome h1 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 4px;
+  color: #fff;
 }
 
 .settings-welcome p {
-  font-size: 14px;
+  font-size: 13px;
   opacity: 0.9;
+  color: #ddd;
 }
 
+/* Abas de Navegação */
 .settings-tabs {
   display: flex;
   gap: 12px;
   margin-bottom: 16px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .settings-tab {
   border: none;
-  border-radius: 999px;
+  border-radius: 20px;
   padding: 8px 16px;
   font-size: 13px;
   cursor: pointer;
   background: #ffffff;
   color: #333333;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .settings-tab:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 .settings-tab--active {
   background: #b00020;
   color: #ffffff;
+  box-shadow: 0 2px 8px rgba(176, 0, 32, 0.4);
 }
 
+/* Painel de Conteúdo (Formulários) */
 .settings-panel {
   background: #ffffff;
   border-radius: 18px;
-  padding: 18px 20px 22px;
+  padding: 20px;
   color: #333333;
-  min-height: 220px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-  margin-bottom: 24px;
+  flex: 1; /* Cresce para ocupar o meio */
+  overflow-y: auto; /* Permite scroll apenas aqui se for muito grande */
+  margin-bottom: 16px;
+  
+  /* Estilização da barra de rolagem interna */
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
 }
 
-.settings-panel-content h2 {
+.settings-panel h2 {
   font-size: 18px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  color: #b00020;
 }
 
 .settings-panel-text {
   font-size: 13px;
-  color: #555555;
+  color: #555;
   margin-bottom: 16px;
 }
 
-.settings-form {
+/* GRID DO FORMULÁRIO - A Mágica acontece aqui */
+.settings-form-grid {
+  display: grid;
+  /* Desktop: 3 colunas iguais */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.settings-form-item {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
 
-.settings-form-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.settings-form-item label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #444;
 }
 
-.settings-form-row label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #444444;
+.settings-form-item input {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border 0.2s;
 }
 
-.settings-form-row input {
-  border-radius: 10px;
-  border: 1px solid #cccccc;
-  padding: 8px 10px;
-  font-size: 13px;
+.settings-form-item input:focus {
+  border-color: #b00020;
+  background-color: #fafafa;
 }
 
+/* Botão Principal (Salvar/Link) */
 .settings-primary-button {
-  margin-top: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 18px;
-  border-radius: 999px;
+  padding: 12px 24px;
+  border-radius: 20px;
   border: none;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   background: #b00020;
   color: #ffffff;
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
-  transition:
-    background 0.15s ease,
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
+  transition: background 0.2s;
 }
 
 .settings-primary-button:hover {
-  background: #d0002a;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
+  background: #90001a;
 }
 
+.settings-primary-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Listas (Idiomas) */
 .settings-list {
   list-style: none;
-  margin-top: 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 13px;
 }
 
 .settings-list li {
   display: flex;
   justify-content: space-between;
-  padding: 6px 10px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
   background: #f3f3f3;
-}
-
-.settings-list-label {
-  color: #333333;
+  font-size: 14px;
 }
 
 .settings-list-tag {
   font-size: 11px;
   background: #b00020;
   color: #ffffff;
-  border-radius: 999px;
+  border-radius: 10px;
   padding: 2px 8px;
 }
 
+/* Toggle Switch */
 .settings-toggle {
   display: flex;
   align-items: center;
   gap: 12px;
   cursor: pointer;
+  margin-bottom: 8px;
 }
-
-.settings-toggle input {
-  display: none;
-}
-
+.settings-toggle input { display: none; }
 .settings-toggle-slider {
   width: 44px;
   height: 24px;
   border-radius: 999px;
   background: #cccccc;
   position: relative;
-  transition: background 0.15s ease;
+  transition: background 0.2s;
+  flex-shrink: 0;
 }
-
 .settings-toggle-slider::before {
   content: "";
   position: absolute;
@@ -221,144 +247,121 @@ body {
   background: #ffffff;
   top: 3px;
   left: 3px;
-  transition: transform 0.15s ease;
+  transition: transform 0.2s;
 }
+.settings-toggle input:checked + .settings-toggle-slider { background: #b00020; }
+.settings-toggle input:checked + .settings-toggle-slider::before { transform: translateX(20px); }
+.settings-toggle-label { font-size: 13px; color: #444; }
 
-.settings-toggle input:checked + .settings-toggle-slider {
-  background: #b00020;
-}
-
-.settings-toggle input:checked + .settings-toggle-slider::before {
-  transform: translateX(18px);
-}
-
-.settings-toggle-label {
-  font-size: 13px;
-  color: #444444;
-}
-
-.settings-notice {
-  margin-top: 8px;
-  font-size: 11px;
-  color: #777777;
-}
-
+/* Botões do Rodapé */
 .settings-bottom-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 4px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  flex-shrink: 0;
 }
 
 .settings-card--exit {
   background: #ffffff;
   border-radius: 18px;
-  padding: 14px 14px 16px;
+  padding: 12px;
   color: #b00020;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-  transition:
-    transform 0.1s ease,
-    box-shadow 0.1s ease,
-    background 0.1s ease;
   border: none;
+  font-size: 14px;
+  transition: transform 0.1s;
 }
 
-.settings-card--exit:hover {
-  background: #ffe7ea;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
-}
+.settings-card--exit:hover { transform: translateY(-2px); }
 
 .settings-card--danger {
   color: #ffffff;
   background: #b00020;
 }
-
-.settings-card--danger:hover {
-  background: #d0002a;
-}
+.settings-card--danger:hover { background: #8a0019; }
 
 .settings-footer {
   text-align: center;
   font-size: 11px;
-  color: #333333;
+  color: #666;
   margin-top: 10px;
 }
 
-@media (max-width: 768px) {
+/* ===================== RESPONSIVIDADE (MOBILE) ===================== */
+@media (max-width: 900px) {
+  
+  /* 1. Ocupar tela toda */
   .settings-frame {
-    padding: 16px;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background: #4a4a4a; /* Fundo direto escuro */
   }
 
+  /* 2. Remove o container interno "card" e deixa fluído */
   .settings-inner {
-    padding: 16px;
+    border-radius: 0;
+    padding: 20px;
+    height: 100%;
+    background: transparent;
   }
 
+  /* 3. Esconde o bloco de Boas-vindas */
+  .settings-welcome {
+    display: none;
+  }
+
+  /* 4. Ajusta Cabeçalho */
+  .settings-header {
+    justify-content: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #666;
+    padding-bottom: 12px;
+  }
+  
+  .settings-logo {
+    color: #fff;
+    font-size: 20px;
+  }
+
+  /* 5. Abas com scroll horizontal se precisar */
+  .settings-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+  .settings-tab {
+    flex-shrink: 0; /* Não deixa encolher */
+  }
+
+  /* 6. Formulário em Coluna Única (Estica na tela) */
+  .settings-form-grid {
+    grid-template-columns: 1fr; /* 1 Coluna só! */
+    gap: 18px; /* Mais espaço entre os inputs */
+  }
+
+  .settings-form-item input {
+    padding: 14px; /* Input maior para dedo */
+    font-size: 16px; /* Letra maior para ler */
+  }
+
+  /* 7. Botões do fundo empilhados */
   .settings-bottom-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Um em cima do outro */
+    gap: 12px;
   }
-}
-
-.settings-frame {
-  max-width: 1000px;
-  padding: 18px;
-}
-
-.settings-inner {
-  padding: 18px 24px 24px;
-}
-
-.settings-panel {
-  min-height: 150px;
-  padding: 16px;
-}
-
-.settings-form-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px 18px;
-  margin-bottom: 12px;
-}
-
-.settings-form-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.settings-form-item label {
-  font-size: 12px;
-  color: #444;
-}
-
-.settings-form-item input {
-  padding: 6px 8px;
-  font-size: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.settings-welcome h1 {
-  font-size: 16px;
-}
-
-.settings-welcome p {
-  font-size: 12px;
-}
-
-.settings-tabs button {
-  padding: 6px 14px;
-  font-size: 12px;
-}
-
-.settings-card--exit {
-  padding: 10px;
-  font-size: 14px;
-}
-
-body, html {
-  overflow-y: hidden;
+  
+  .settings-card--exit {
+    padding: 14px;
+    font-size: 16px;
+  }
+  
+  /* Footer some ou diminui */
+  .settings-footer {
+    display: none; 
+  }
 }

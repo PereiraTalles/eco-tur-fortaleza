@@ -1,24 +1,31 @@
+/* ===================== GERAL / DESKTOP ===================== */
 body {
   background-color: #333;
   margin: 0;
-  overflow-x: hidden; 
+  overflow: hidden; 
+  width: 100vw;
+  height: 100vh;
+}
+
+.mobile-topbar,
+.mobile-menu-overlay,
+.mobile-actions {
+  display: none;
 }
 
 .home-frame {
   width: 100%;
   max-width: 1400px;
   min-height: 90vh;
-
   margin: 20px auto;
   padding: 24px 32px;
   box-sizing: border-box;
-
   background-color: #d9d9d9;
   border-radius: 32px;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 }
 
 .home-main {
@@ -78,6 +85,7 @@ body {
   overflow: hidden;
   min-height: 380px;
 }
+
 .home-map-leaflet,
 .home-map .leaflet-container {
   width: 100%;
@@ -117,43 +125,24 @@ body {
   color: #606060;
 }
 
+/* Estilo dos Cards (Desktop e Mobile agora compartilham lógica) */
 .home-cards-row {
   margin-top: 16px;
   padding: 12px 16px;
   background-color: #666666;
   border-radius: 18px;
-
   display: flex;
   gap: 18px;
-
   max-width: 621px;      
-  overflow: hidden; 
-}
-
-.home-cards-carousel {
-  overflow-x: auto;   
-  scroll-snap-type: x mandatory;
-}
-
-.home-cards-carousel::-webkit-scrollbar {
-  height: 8px;
-}
-
-.home-cards-carousel::-webkit-scrollbar-thumb {
-  background-color: #444;
-  border-radius: 4px;
-}
-
-.home-cards-carousel {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
 }
 
-.home-cards-carousel::-webkit-scrollbar {
+/* Scrollbar personalizada */
+.home-cards-row::-webkit-scrollbar {
   height: 8px;
 }
-
-.home-cards-carousel::-webkit-scrollbar-thumb {
+.home-cards-row::-webkit-scrollbar-thumb {
   background-color: #444;
   border-radius: 4px;
 }
@@ -167,12 +156,11 @@ body {
   gap: 8px;
   cursor: pointer;
   scroll-snap-align: start;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease;
 }
 
 .home-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .home-card-title {
@@ -184,6 +172,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 0.9rem;
 }
 
 .home-card-image {
@@ -192,18 +181,6 @@ body {
   height: 90px;
   background-size: cover;
   background-position: center;
-}
-
-.home-error {
-  color: #b00020;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-}
-
-.home-empty {
-  color: #ddd;
-  font-size: 0.9rem;
-  align-self: center;
 }
 
 .home-bottom-actions {
@@ -225,15 +202,6 @@ body {
   cursor: pointer;
 }
 
-.home-bottom-button-exit {
-  background-color: #ffffff;
-}
-
-.home-bottom-button:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
-/* rodapé */
 .home-footer {
   margin-top: 16px;
   text-align: center;
@@ -241,29 +209,228 @@ body {
   color: #fff;
 }
 
+/* ===================== MODO CELULAR (<=900px) ===================== */
 @media (max-width: 900px) {
-  .home-main {
-    grid-template-columns: 1fr;
+
+  .home-frame {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background-color: #d9d9d9; 
+    position: relative;
+    overflow: hidden;
   }
 
-  .home-divider {
+  .home-main {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Esconde estrutura de PC */
+  .home-left-header,
+  .home-divider,
+  .home-right, 
+  .home-bottom-actions, 
+  .home-footer {
     display: none;
   }
 
+  /* O MAPA ocupa tudo */
   .home-left {
-    padding-right: 0;
-    margin-bottom: 16px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
   }
 
-  .home-right {
-    padding-left: 0;
+  .home-map {
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  
+  .home-map-leaflet,
+  .home-map .leaflet-container {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100vh;
+    border-radius: 0;
   }
 
-  .home-cards-row {
-    flex-wrap: wrap;
+  /* --- TOPO FLUTUANTE --- */
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 15px; 
+    left: 15px; 
+    right: 15px;
+    z-index: 100;
+    pointer-events: none;
   }
 
-  .home-cards-carousel {
-    overflow-x: visible;
+  .mobile-topbar > * {
+    pointer-events: auto;
+  }
+
+  .mobile-logo {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #444;
+    text-shadow: 2px 2px 0px #fff;
+    font-family: "Arial Rounded MT Bold", Arial;
+    margin-right: 8px;
+  }
+
+  .mobile-search {
+    flex: 1;
+    margin: 0 10px;
+    padding: 10px 16px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mobile-search input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .mobile-menu {
+    font-size: 1.8rem;
+    color: #333;
+    background: #fff;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
+
+  /* --- BOTÕES DE BAIXO FLUTUANTES --- */
+  .mobile-actions {
+    display: flex;
+    gap: 12px;
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+    z-index: 100;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .mobile-btn {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 20px;
+    background: #fff;
+    color: #333;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    cursor: pointer;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  /* --- NOVO: MENU OVERLAY COM CARROSSÉIS --- */
+  .mobile-menu-overlay {
+    display: flex; /* Só aparece quando tem a classe .open */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    /* Fundo Escuro Transparente para focar no carrossel */
+    background-color: rgba(0, 0, 0, 0.85); 
+    backdrop-filter: blur(5px);
+    
+    z-index: 2000; /* Acima de tudo */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .mobile-menu-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Container dos carrosséis dentro do menu */
+  .mobile-carousel-container {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto; /* Permite rolar se a tela for muito pequena na altura */
+    max-height: 90vh;
+  }
+
+  .mobile-carousel-title {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: #fff;
+    color: #333;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 15px;
+    align-self: flex-start;
+  }
+
+  /* Reutiliza a classe home-cards-row mas ajusta para o menu */
+  .mobile-carousel-container .home-cards-row {
+    background-color: rgba(255, 255, 255, 0.2); /* Fundo mais leve no modal */
+    max-width: 100%;
+    margin: 0;
+  }
+
+  /* Ajuste leve do card dentro do mobile */
+  .mobile-carousel-container .home-card {
+    min-width: 180px;
+  }
+
+  /* Botão de fechar menu */
+  .mobile-close-btn {
+    margin-top: 20px;
+    background: #b00020;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    align-self: center;
   }
 }

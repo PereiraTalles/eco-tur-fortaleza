@@ -33,7 +33,13 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
   const [mensagem, setMensagem] = useState<string | null>(null);
   const [erro, setErro] = useState<string | null>(null);
 
-  // Carregar usuário do localStorage ao abrir Configurações
+  // Limpa mensagens ao trocar de aba
+  useEffect(() => {
+    setMensagem(null);
+    setErro(null);
+  }, [abaAtiva]);
+
+  // Carregar usuário do localStorage
   useEffect(() => {
     try {
       const raw = localStorage.getItem("eco_tur_user");
@@ -57,8 +63,8 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
       return;
     }
 
-    if (!nome || !sobrenome || !cidade || !email) {
-      setErro("Preencha todos os campos obrigatórios.");
+    if (!nome || !email) {
+      setErro("Nome e Email são obrigatórios.");
       return;
     }
 
@@ -72,14 +78,12 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
         sobrenome,
         cidade,
         email,
-        // se quiser já usar a novaSenha, pode mandar aqui
         senha: novaSenha ? novaSenha : undefined,
       };
 
       const resp = await atualizarUsuario(usuario.id, payload);
       const userAtualizado = resp.user;
 
-      // Atualiza localStorage com o novo usuário
       const atualizadoLocal: UsuarioLocal = {
         id: userAtualizado.id,
         name: userAtualizado.name,
@@ -97,8 +101,9 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
     } catch (e: any) {
       console.error(e);
       setErro(
+        e?.response?.data?.error || 
         e?.message ||
-          "Não foi possível salvar as alterações. Tente novamente."
+        "Não foi possível salvar as alterações."
       );
     } finally {
       setSalvando(false);
@@ -106,36 +111,22 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
   }
 
   async function handleApagarConta() {
-    if (!usuario) {
-      setErro("Usuário não encontrado. Faça login novamente.");
-      return;
-    }
+    if (!usuario) return;
 
     const confirmar = window.confirm(
-      "Tem certeza que deseja apagar sua conta? Esta ação não pode ser desfeita."
+      "Tem certeza que deseja apagar sua conta? Esta ação é irreversível."
     );
 
     if (!confirmar) return;
 
     try {
       setSalvando(true);
-      setErro(null);
-      setMensagem(null);
-
       await deletarUsuario(usuario.id);
-
-      // limpa localStorage e volta pro fluxo de logout
       localStorage.removeItem("eco_tur_user");
-      localStorage.removeItem("eco_tur_tela");
-
       alert("Conta apagada com sucesso.");
       onLogout();
     } catch (e: any) {
-      console.error(e);
-      setErro(
-        e?.message ||
-          "Não foi possível apagar sua conta. Tente novamente."
-      );
+      setErro("Erro ao apagar conta: " + (e?.message || "Tente novamente."));
     } finally {
       setSalvando(false);
     }
@@ -149,80 +140,60 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
           <div className="settings-logo">ECO TUR</div>
         </header>
 
-        {/* Boas-vindas fixa */}
+        {/* Boas-vindas (some no mobile via CSS) */}
         <section className="settings-welcome">
-          <h1>Seja bem-vindo ao Eco Tur Fortaleza/CE</h1>
+          <h1>Olá, {usuario?.name || "Visitante"}!</h1>
           <p>
-            Aqui você pode verificar seus dados, idioma, notificações e enviar
-            feedback para nossa equipe.
+            Gerencie seus dados e preferências do aplicativo.
           </p>
         </section>
 
-        {/* Abas principais */}
+        {/* Abas */}
         <nav className="settings-tabs">
           <button
             type="button"
-            className={
-              "settings-tab" +
-              (abaAtiva === "perfil" ? " settings-tab--active" : "")
-            }
+            className={`settings-tab ${abaAtiva === "perfil" ? "settings-tab--active" : ""}`}
             onClick={() => setAbaAtiva("perfil")}
           >
             Perfil
           </button>
-
           <button
             type="button"
-            className={
-              "settings-tab" +
-              (abaAtiva === "idioma" ? " settings-tab--active" : "")
-            }
+            className={`settings-tab ${abaAtiva === "idioma" ? "settings-tab--active" : ""}`}
             onClick={() => setAbaAtiva("idioma")}
           >
-            Idioma e Região
+            Idioma
           </button>
-
           <button
             type="button"
-            className={
-              "settings-tab" +
-              (abaAtiva === "notificacoes" ? " settings-tab--active" : "")
-            }
+            className={`settings-tab ${abaAtiva === "notificacoes" ? "settings-tab--active" : ""}`}
             onClick={() => setAbaAtiva("notificacoes")}
           >
             Notificações
           </button>
-
           <button
             type="button"
-            className={
-              "settings-tab" +
-              (abaAtiva === "feedback" ? " settings-tab--active" : "")
-            }
+            className={`settings-tab ${abaAtiva === "feedback" ? "settings-tab--active" : ""}`}
             onClick={() => setAbaAtiva("feedback")}
           >
             Feedback
           </button>
         </nav>
 
-        {/* Mensagens de erro/sucesso */}
+        {/* Área de Mensagens */}
         {(erro || mensagem) && (
-          <div style={{ marginBottom: 10 }}>
-            {erro && (
-              <p style={{ color: "#ffb3b3", fontSize: 12 }}>{erro}</p>
-            )}
-            {mensagem && (
-              <p style={{ color: "#b2ffb2", fontSize: 12 }}>{mensagem}</p>
-            )}
+          <div style={{ marginBottom: 16, padding: '10px', borderRadius: '8px', background: erro ? '#ffebee' : '#e8f5e9' }}>
+            {erro && <p style={{ color: "#c62828", fontSize: 13, fontWeight: 'bold' }}>{erro}</p>}
+            {mensagem && <p style={{ color: "#2e7d32", fontSize: 13, fontWeight: 'bold' }}>{mensagem}</p>}
           </div>
         )}
 
-        {/* Área central que troca de acordo com a aba */}
+        {/* Painel Central */}
         <section className="settings-panel">
+          
           {abaAtiva === "perfil" && (
             <div className="settings-panel-content">
               <h2>Editar Perfil</h2>
-
               <form className="settings-form-grid">
                 <div className="settings-form-item">
                   <label>Nome</label>
@@ -235,32 +206,12 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
                 </div>
 
                 <div className="settings-form-item">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="seuemail@exemplo.com"
-                  />
-                </div>
-
-                <div className="settings-form-item">
-                  <label>Senha atual</label>
-                  <input
-                    type="password"
-                    value={senhaAtual}
-                    onChange={(e) => setSenhaAtual(e.target.value)}
-                    placeholder="••••••••"
-                  />
-                </div>
-
-                <div className="settings-form-item">
                   <label>Sobrenome</label>
                   <input
                     type="text"
                     value={sobrenome}
                     onChange={(e) => setSobrenome(e.target.value)}
-                    placeholder="Seu sobrenome"
+                    placeholder="Sobrenome"
                   />
                 </div>
 
@@ -275,7 +226,17 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
                 </div>
 
                 <div className="settings-form-item">
-                  <label>Nova senha</label>
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="email@exemplo.com"
+                  />
+                </div>
+
+                <div className="settings-form-item">
+                  <label>Nova Senha (Opcional)</label>
                   <input
                     type="password"
                     value={novaSenha}
@@ -283,15 +244,19 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
                     placeholder="Nova senha"
                   />
                 </div>
+                
+                {/* Botão de Salvar dentro do Grid para alinhar ou fora? 
+                    Vamos deixar fora do grid mas dentro do painel */}
               </form>
-
+              
               <button
                 type="button"
                 className="settings-primary-button"
                 onClick={handleSalvarPerfil}
                 disabled={salvando}
+                style={{ width: '100%', marginTop: '10px' }}
               >
-                {salvando ? "Salvando..." : "Salvar alterações"}
+                {salvando ? "Salvando..." : "Salvar Alterações"}
               </button>
             </div>
           )}
@@ -300,30 +265,15 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
             <div className="settings-panel-content">
               <h2>Idioma e Região</h2>
               <p className="settings-panel-text">
-                Esses idiomas aparecem apenas como visualização. No futuro você
-                poderá alternar o idioma do aplicativo por aqui.
+                Selecione o idioma de visualização do aplicativo.
               </p>
-
               <ul className="settings-list">
                 <li>
-                  <span className="settings-list-label">Português (Brasil)</span>
-                  <span className="settings-list-tag">Padrão</span>
+                  <span>Português (Brasil)</span>
+                  <span className="settings-list-tag">Atual</span>
                 </li>
-                <li>
-                  <span className="settings-list-label">Inglês</span>
-                </li>
-                <li>
-                  <span className="settings-list-label">Espanhol</span>
-                </li>
-                <li>
-                  <span className="settings-list-label">Francês</span>
-                </li>
-                <li>
-                  <span className="settings-list-label">Italiano</span>
-                </li>
-                <li>
-                  <span className="settings-list-label">Alemão</span>
-                </li>
+                <li><span>Inglês</span></li>
+                <li><span>Espanhol</span></li>
               </ul>
             </div>
           )}
@@ -332,71 +282,50 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
             <div className="settings-panel-content">
               <h2>Notificações</h2>
               <p className="settings-panel-text">
-                No futuro o app poderá avisar quando você estiver perto de um
-                ponto turístico interessante.
+                Gerencie como você recebe alertas.
               </p>
-
               <div className="settings-form">
                 <label className="settings-toggle">
                   <input type="checkbox" />
                   <span className="settings-toggle-slider" />
-                  <span className="settings-toggle-label">
-                    Ativar alerta quando eu estiver perto de um ponto do Eco Tur
-                    Fortaleza.
-                  </span>
+                  <span className="settings-toggle-label">Alertas de Proximidade</span>
                 </label>
-
-                <p className="settings-notice">
-                  * Este recurso é apenas visual por enquanto. Em versões
-                  futuras, a notificação será ativada de verdade.
-                </p>
+                <label className="settings-toggle">
+                  <input type="checkbox" defaultChecked />
+                  <span className="settings-toggle-slider" />
+                  <span className="settings-toggle-label">Novidades e Atualizações</span>
+                </label>
               </div>
             </div>
           )}
 
           {abaAtiva === "feedback" && (
             <div className="settings-panel-content">
-              <h2>Feedback e Suporte</h2>
+              <h2>Feedback</h2>
               <p className="settings-panel-text">
-                Sua opinião é muito importante para melhorarmos o Eco Tur
-                Fortaleza. Use o formulário abaixo para enviar sugestões, elogios
-                ou problemas encontrados.
+                Encontrou um erro ou tem uma sugestão? Conte para nós.
               </p>
-
               <a
                 className="settings-primary-button"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeoiIxLIYwlWXM09swyeMTx_klue2kJEbQEkpZUFDKRol54LA/viewform?usp=sharing&ouid=116439177875750380903"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSeoiIxLIYwlWXM09swyeMTx_klue2kJEbQEkpZUFDKRol54LA/viewform?usp=sharing"
                 target="_blank"
                 rel="noreferrer"
+                style={{ width: '100%', textAlign: 'center' }}
               >
-                Abrir formulário de feedback
+                Abrir Formulário
               </a>
-
-              <p className="settings-notice">
-                O formulário será aberto em uma nova aba do navegador.
-              </p>
             </div>
           )}
         </section>
 
-        {/* Botões fixos embaixo */}
+        {/* Botões do Rodapé */}
         <section className="settings-bottom-row">
-          <button
-            type="button"
-            className="settings-card--exit"
-            onClick={onBackHome}
-          >
-            Voltar para Home
+          <button type="button" className="settings-card--exit" onClick={onBackHome}>
+            Voltar
           </button>
-
-          <button
-            type="button"
-            className="settings-card--exit"
-            onClick={onLogout}
-          >
-            Sair do App
+          <button type="button" className="settings-card--exit" onClick={onLogout}>
+            Sair da Conta
           </button>
-
           <button
             type="button"
             className="settings-card--exit settings-card--danger"
@@ -409,7 +338,7 @@ function SettingsPage({ onBackHome, onLogout }: SettingsPageProps) {
       </div>
 
       <footer className="settings-footer">
-        © Copyright Eco Fortaleza Todos os Direitos Reservados
+        © Copyright Eco Fortaleza
       </footer>
     </div>
   );

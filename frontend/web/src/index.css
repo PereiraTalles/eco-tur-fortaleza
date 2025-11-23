@@ -3,34 +3,42 @@
   color: #333;
 }
 
+/* ----------------- BASE ----------------- */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+}
+
 .login-title,
 .btn {
   font-family: "Arial Rounded MT Bold", Arial, system-ui, sans-serif;
 }
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #333; 
-}
+
+/* ----------------- CONTAINER GERAL ----------------- */
 
 .app-frame {
   width: 100%;
-  max-width: 1400px;
-  min-height: 87vh;
+  max-width: 480px;       /* foco em celular no padrão */
+  min-height: 100vh;
 
-  border-radius: 32px;
-  padding: 18px;
+  margin: 0 auto;
+  padding: 12px;
   box-sizing: border-box;
-  margin: 25px auto;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  border-radius: 0;
   position: relative;
-  overflow: hidden; 
-  background-color: transparent; 
+  overflow: hidden;
+  background-color: transparent;
 }
+
+/* fundo com a imagem */
 
 .app-frame::before {
   content: "";
@@ -42,9 +50,8 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 
-  opacity: 0.90;     
+  opacity: 0.9;
   filter: brightness(0.7);
-
   z-index: 1;
 }
 
@@ -53,46 +60,51 @@ body {
   z-index: 2;
 }
 
+/* ----------------- CARD PRINCIPAL (LOGIN / CRIAR CONTA) ----------------- */
+
 .login-card {
   width: 100%;
-  max-width: 900px;
-  background-color: transparent; 
-  border-radius: 24px;
+  max-width: 420px;
+  background-color: transparent;
+  border-radius: 20px;
 
-  padding: 64px 96px;
+  padding: 20px 16px;
   box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 41px;
+  gap: 16px;
 }
+
+/* título ECO TUR FORTALEZA */
 
 .login-title {
   margin: 0;
   text-align: center;
 
-  font-size: 2.6rem;           
-  font-weight: 600;           
-  letter-spacing: 0.20em;      
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   color: #fff;
 }
 
+/* ----------------- FORM DE LOGIN ----------------- */
+
 .login-form {
   width: 100%;
-  max-width: 420px;
+  max-width: 360px;
 
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 14px;
 }
 
 .login-field {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-
-  font-size: 1.1rem;
+  gap: 6px;
+  font-size: 0.95rem;
 }
 
 .login-field label {
@@ -102,13 +114,12 @@ body {
 }
 
 .login-field input {
-  padding: 14px 18px;
-  border-radius: 18px;
+  padding: 10px 14px;
+  border-radius: 14px;
   border: 1px solid #777;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   background-color: #ffffff;
   outline: none;
-
   transition: 0.2s;
 }
 
@@ -117,19 +128,29 @@ body {
   background-color: #fafafa;
 }
 
+/* botões do login (padrão: coluna, bom para celular) */
+
 .login-actions {
-  margin-top: 12px;
+  margin-top: 8px;
   display: flex;
-  gap: 28px;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 100%;
+  max-width: 360px;
 }
 
+/* ----------------- BOTÕES ----------------- */
+
 .btn {
-  min-width: 150px;
-  padding: 12px 26px;
-  border-radius: 20px;
-  font-size: 1.05rem;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 20px;
+  border-radius: 18px;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
+  border: none;
   transition: 0.15s;
 }
 
@@ -152,79 +173,118 @@ body {
   background-color: #f3f3f3;
 }
 
+/* rodapé */
+
 .app-footer {
-  margin-top: 22px;
-  font-size: 0.8rem;
+  margin-top: 10px;
+  font-size: 0.75rem;
   color: #fff;
   text-align: center;
 }
 
+/* ----------------- FORM DE CRIAR CONTA ----------------- */
+
 .signup-form {
-  width: 120%;
-  max-width: 900px;
+  width: 100%;
+  max-width: 420px;
+
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 18px;
   align-items: center;
 }
+
+/* grid com os campos (nome, email, cidade etc.) */
 
 .signup-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 40px;
-  row-gap: 24px;
+  grid-template-columns: 1fr;   /* tudo em 1 coluna no mobile */
+  row-gap: 14px;
 }
+
+/* ações do formulário de criar conta */
 
 .signup-actions {
+  width: 100%;
+  max-width: 360px;
+
   display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 8px;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
 }
 
-@media (max-width: 900px) {
-  .signup-grid {
-    grid-template-columns: 1fr;
-  }
+/* ----------------- RESPONSIVIDADE PARA TELAS MÉDIAS (TABLET / NOTE) ----------------- */
 
-  .signup-actions {
-    flex-direction: column;
-    width: 100%;
-    max-width: 280px;
-    margin-inline: auto;
-  }
-}
-
-@media (max-width: 900px) {
+@media (min-width: 768px) {
   .app-frame {
-    padding: 24px;
-    min-height: 100vh;
+    max-width: 600px;
   }
 
   .login-card {
-    padding: 40px 24px;
-    max-width: 100%;
-    gap: 32px;
+    padding: 24px 24px;
+    gap: 18px;
   }
 
   .login-title {
     font-size: 2rem;
-    letter-spacing: 0.14em;
   }
 
-  .login-field input {
-    font-size: 1rem;
+  .login-form,
+  .signup-form {
+    max-width: 420px;
   }
 
   .login-actions {
-    flex-direction: column;
-    width: 100%;
-    max-width: 280px;
-    align-items: stretch;
+    flex-direction: row;          /* botões lado a lado */
+    justify-content: center;
+    max-width: 420px;
+  }
+
+  .signup-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 colunas no desktop/tablet */
+    column-gap: 20px;
+  }
+
+  .signup-actions {
+    flex-direction: row;
+    justify-content: center;
   }
 
   .btn {
-    width: 100%;
+    width: auto;
+    min-width: 160px;
+  }
+}
+
+/* ----------------- RESPONSIVIDADE PARA TELAS GRANDES (PC) ----------------- */
+
+@media (min-width: 1000px) {
+  .app-frame {
+    max-width: 1300px;   /* imagem grande, como você gostou */
+    min-height: 87vh;
+    margin-top: 40px;
+    border-radius: 32px;
+  }
+
+  .login-card {
+    max-width: 600px;
+    padding: 32px 40px;
+    gap: 20px;
+  }
+
+  .login-title {
+    font-size: 2.4rem;
+    letter-spacing: 0.22em;
+  }
+
+  .login-form {
+    max-width: 420px;   /* evita inputs enormes */
+    gap: 16px;
+  }
+
+  .login-actions {
+    max-width: 420px;   /* mesmos limites dos campos */
   }
 }
