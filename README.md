@@ -86,4 +86,4 @@ Backend ➝ Frontend (retorno das informações em JSON)
 - Millene de Souza Junior - 2326165 — Frontend Web e Mobile
 - Herison Daniel Wanderley -2315221 — Frontend Web e Mobile
 - Esther de Souza Ramalho - 2313582 — Suporte de mídia
-- Diego Rodrigues de Araujo -  — Suporte de documentação
+- Diego Rodrigues de Araujo - 2326157 — Suporte de documentação
