@@ -80,10 +80,10 @@ Backend ➝ Frontend (retorno das informações em JSON)
 - Frontend: https://eco-tur-fortaleza.vercel.app  
 - Backend: https://eco-tur-fortaleza.onrender.com  
 
-### 5. Equipe do Projeto
+### 6. Equipe do Projeto
 
-Talles de Lima Pereira - 2326201— Backend, Banco de Dados, Deploy
-Millene de Souza Junior - 2326165 — Frontend Web e Mobile
-Herison Daniel Wanderley -2315221 — Frontend Web e Mobile
-Esther de Souza Ramalho - 2313582 — Suporte de mídia 
-Diego Rodrigues de Araujo -  — Suporte de documentação
+- Talles de Lima Pereira - 2326201— Backend, Banco de Dados, Deploy
+- Millene de Souza Junior - 2326165 — Frontend Web e Mobile
+- Herison Daniel Wanderley -2315221 — Frontend Web e Mobile
+- Esther de Souza Ramalho - 2313582 — Suporte de mídia
+- Diego Rodrigues de Araujo -  — Suporte de documentação
