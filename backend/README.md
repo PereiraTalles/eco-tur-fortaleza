@@ -150,4 +150,5 @@ Equipe do Projeto
 Talles de Lima Pereira — Backend, Banco de Dados, Deploy
 Milena — Frontend Web e Mobile
 Herison — Frontend Web e Mobile
-João — Suporte e documentação
+Ester — Suporte de mídia 
+Diego — Suporte de documentação
